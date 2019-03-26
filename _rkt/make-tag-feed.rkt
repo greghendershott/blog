@@ -208,50 +208,6 @@
                    "Sat, 11 Oct 2014 04:00:00 UT")]
     [_ (void)]))
 
-;;; footnotes
-
-(define (unlinkify-footnotes xs)
-  (map unlinkify-footnotes/xexpr xs))
-
-(define (unlinkify-footnotes/xexpr x)
-  (match x
-    ;; Footnote link to definition
-    [`(sup (a ([href ,href][name ,name]) ,text)) `(sup ,text)]
-    ;; Footnote definition return link
-    [`(a ([href ,href]) "↩") ""]
-    ;; All else
-    [`(,(? symbol? tag) ([,(? symbol? ks) ,(? string? vs)] ...) . ,es)
-     `(,tag ,(map list ks vs) ,@(unlinkify-footnotes es))]
-    [`(,(? symbol? tag) . ,es)
-     `(,tag ,@(unlinkify-footnotes es))]
-    [_ x]))
-
-(module+ test
-  (check-equal?
-   (unlinkify-footnotes/xexpr
-    `(p "Blah blah" (sup (a ([href "x"][name "y"]) "1")) "."))
-   `(p "Blah blah" (sup "1") "."))
-  (check-equal?
-   (unlinkify-footnotes/xexpr
-    '(p "Blah" (em (sup (a ([href "x"][name "y"]) "1")) ".")))
-   `(p "Blah" (em (sup "1") ".")))
-  (check-equal?
-   (unlinkify-footnotes/xexpr
-    '(p (em "hi") "there"))
-   '(p (em "hi") "there"))
-  (check-equal?
-   (unlinkify-footnotes/xexpr
-    '(p ([class "foo"][style "x"]) "there"))
-   '(p ((class "foo") (style "x")) "there"))
-  (check-equal?
-   (unlinkify-footnotes/xexpr
-    '(p ([class "foo"]) "there"))
-   '(p ((class "foo")) "there"))
-  (check-equal?
-   (unlinkify-footnotes/xexpr
-    '(p () "there"))
-   '(p () "there")))
-
 ;;; urn
 
 (define (urn uri-path)
