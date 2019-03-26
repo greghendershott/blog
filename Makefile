@@ -49,15 +49,14 @@ PREVIEW        := racket _rkt/preview.rkt
 # sources for index and feed files. My attempts to do it as one single
 # chain never worked.
 
-.PHONY: all
+.PHONY: all clean preview
+
 all:
 	make posts-cache
 	make htmls-and-feeds
 
-.PHONY: clean
 clean: clean-posts-cache clean-htmls-and-feeds
 
-.PHONY: preview
 preview: all
 	$(PREVIEW) $<
 
@@ -65,6 +64,7 @@ preview: all
 # Stage 1
 
 .PHONY: posts-cache clean-posts-cache
+
 posts-cache: $(POST-CACHES)
 
 clean-posts-cache:
@@ -81,30 +81,38 @@ $(CACHE)/%.rktd: $(POSTS)/%.md
 # Stage 2
 
 .PHONY: hmtls-and-feeds clean-htmls-and-feeds
+
 htmls-and-feeds: htmls feeds
 
 clean-htmls-and-feeds: clean-htmls clean-feeds
 
 
+# HTMLs
+
 .PHONY: hmtls clean-htmls
+
 htmls: $(POST-HTMLS) $(TAG-HTMLS) $(OUT)/index.html
 
 clean-htmls:
 	-rm $(POST-HTMLS)
 	-rm $(TAG-HTMLS)
 	-rm $(OUT)/index.html
+	-rmdir $(OUT)/tags
 
-$(OUT)/%.html: $(CACHE)/%.rktd
+$(OUT)/%.html: $(CACHE)/%.rktd _rkt/render-page.rkt
 	$(RENDER-POST) $< $@
 
-$(OUT)/tags/%.html: $(CACHE)/tags/%
+$(OUT)/tags/%.html: $(CACHE)/tags/% _rkt/render-page.rkt
 	$(MAKE-TAG-INDEX) $< $@
 
-$(OUT)/index.html: $(OUT)/tags/all.html
+$(OUT)/index.html: $(OUT)/tags/all.html _rkt/render-page.rkt
 	cp $< $@
 
 
+# Feeds
+
 .PHONY: feeds clean-feeds
+
 feeds: $(TAG-ATOM-FEEDS) $(TAG-RSS-FEEDS)
 
 clean-feeds:
