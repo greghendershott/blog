@@ -2,11 +2,23 @@
 
 (require racket/format)
 
-(provide full-uri
+(provide scheme
+         host
+         host/urn
+         full-uri
          author)
 
+(define (scheme)
+  "https")
+
+(define (host)
+  "www.greghendershott.com")
+
+(define (host/urn)
+  "www-greghendershott-com")
+
 (define (full-uri uri-path)
-  (~a "https://www.greghendershott.com/" uri-path))
+  (~a (scheme) "://" (host) "/" uri-path))
 
 (define (author)
   "Greg Hendershott")

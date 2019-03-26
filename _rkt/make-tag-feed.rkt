@@ -42,12 +42,13 @@
   (define xe
     `(feed
       ([xmlns "http://www.w3.org/2005/Atom"]
+       [xmlns:dc "http://purl.org/dc/elements/1.1/"]
        [xml:lang "en"])
       (title ([type "text"]) ,title)
       (link ([rel "self"]
              [href ,(full-uri (~a "feeds/" tag ".atom.xml"))]))
       (link ([href ,(full-uri (~a "tags/" tag ".html"))]))
-      (id ,(urn (~a "tags/" tag ".html")))
+      (id ,(urn tag))
       ;; (etag () ???)
       (updated ,updated)
       ,@(for/list ([x (in-list the-posts)])
@@ -68,8 +69,7 @@
     (id ,(urn href))
     (published ,(rfc-8601/universal datetime))
     (updated ,(rfc-8601/universal datetime))
-    ;; Not author: <https://validator.w3.org/feed/docs/error/InvalidContact.html>
-    (dc:creator (name ,(author)))
+    (author (name ,(author)))
     (content ([type "html"]) ,(xexpr->string `(div () ,@body)))))
 
 ;;; rss
@@ -78,12 +78,13 @@
   (define title @~a{Posts tagged "@tag"})
   (define updated
     (match the-posts
-      [(cons (cons _rktd x) _) (rfc-8601/universal (post-datetime x))]
+      [(cons (cons _rktd x) _) (rfc-8601->rfc-822 (post-datetime x))]
       [_ "N/A"]))
   (define href (full-uri (~a "tags/" tag ".rss.xml")))
   (define xe
     `(rss ([version "2.0"]
-           [xmlns:atom "http://www.w3.org/2005/Atom"])
+           [xmlns:atom "http://www.w3.org/2005/Atom"]
+           [xmlns:dc "http://purl.org/dc/elements/1.1/"])
           (channel
            (title ,title)
            (description ,title)
@@ -102,16 +103,16 @@
 
 (define (post->rss-feed-entry-xexpr tag x)
   (match-define (cons rktd (post title datetime tags blurb more? body)) x)
-  (define href (~a "/" (path->string
-                        (file-name-from-path
-                         (path-replace-extension rktd #".html")))))
+  (define href (full-uri (path->string
+                          (file-name-from-path
+                           (path-replace-extension rktd #".html")))))
   `(item
     (title ,title)
     (link ,href)
     (guid ([isPermaLink "false"]) ,(urn href))
     (pubDate ,(rfc-8601->rfc-822 datetime))
     ;; Not author: <https://validator.w3.org/feed/docs/error/InvalidContact.html>
-    (dc:creator (name ,(author)))
+    (dc:creator ,(author))
     (description ,(xexpr->string `(div () ,@body)))))
 
 ;;; Datetime conversion
@@ -255,4 +256,4 @@
 
 (define (urn uri-path)
   ;; Note that URNs have a more restricted syntax than URIs.
-  (~a "urn:" (full-uri "") ":" uri-path))
+  (~a (host/urn) ":" (uri-encode uri-path)))
