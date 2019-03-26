@@ -11,6 +11,8 @@
          "util.rkt"
          "xexpr2text.rkt")
 
+(provide datetime+tags->xexpr) ;for tag index
+
 ;; 1. Create a .rktd file something like the Frog post-struct.rkt
 ;;
 ;; 2. For each tag, create a directory of the tag name (if it doesn't

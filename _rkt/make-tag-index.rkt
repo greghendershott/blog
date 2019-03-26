@@ -3,6 +3,7 @@
 (require racket/require
          (multi-in racket (contract file format match path))
          xml
+         (only-in "compile-post.rkt" datetime+tags->xexpr)
          "post.rkt"
          "render-page.rkt"
          "util.rkt")
@@ -20,25 +21,38 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (index-xexpr the-posts output-html))
+                    (index-xexpr (path->string (file-name-from-path tag-file))
+                                 the-posts
+                                 output-html))
                    out)))]))
 
-(define/contract (index-xexpr the-posts page-path)
-  (-> (listof (cons/c path-string? post?)) path-string? xexpr/c)
-  (page-xexpr
-   #:title       "" ; title
-   #:keywords    "" ;(string-join tags)
-   #:description "" ;(xexprs->description blurb)
-   #:page-path   page-path
-   #:atom-path   ""
-   #:rss-path    ""
-   #:contents
-   (for/list ([the-post (in-list the-posts)])
-     (match-define (cons rktd (post title date tags blurb more? body)) the-post)
-     (define href (~a "/" (path->string
-                           (file-name-from-path
-                            (path-replace-extension rktd #".html")))))
-     `(article ()
-       (h2 () (a ([href ,href])
-               ,title))
-       ,@blurb))))
+(define/contract (index-xexpr tag the-posts page-path)
+  (-> string? (listof (cons/c path-string? post?)) path-string? xexpr/c)
+  (define articles
+    (for/list ([the-post (in-list the-posts)])
+      (match-define (cons rktd (post title datetime tags blurb more? body)) the-post)
+      (define href (~a "/" (path->string
+                            (file-name-from-path
+                             (path-replace-extension rktd #".html")))))
+      `(article ()
+        (header ()
+         (h2 () (a ([href ,href]) ,title))
+         ,(datetime+tags->xexpr datetime tags))
+        ,@blurb
+        ,@(if more?
+              `((footer () (a ([href ,href]) (em () "More" hellip))))
+              `()))))
+  (define-values (page-title contents)
+    (if (equal? tag "all")
+        (values "Home: Greg Hendershott"
+                articles)
+        (values (~a "Posts tagged \"" tag "\"")
+                (cons `(h1 () "Posts tagged " (em ,tag))
+                      articles))))
+  (page-xexpr #:title       page-title
+              #:keywords    tag
+              #:description page-title
+              #:page-path   page-path
+              #:atom-path   (~a "feeds/" tag "atom.xml")
+              #:rss-path    (~a "feeds/" tag "rss.xml")
+              #:contents    contents))
