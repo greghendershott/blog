@@ -19,21 +19,23 @@
          (only-in frog/paths slug)
          "post.rkt"
          "render-page.rkt"
-         "xexpr2text.rkt")
+         "xexpr2text.rkt"
+         "util.rkt")
 
 (module+ main (main))
 
 (define (main)
   (match (current-command-line-arguments)
     [(vector rktd output-html)
-     (define the-post (call-with-input-file rktd read))
+     (define the-post (call-with-input-file* rktd read))
      (make-parent-directory* output-html)
-     (call-with-output-file #:exists 'replace output-html
-       (λ (out)
-         (displayln "<!DOCTYPE html>" out)
-         (displayln (xexpr->string
-                     (post-xexpr the-post output-html))
-                    out)))]))
+     (call-with-output-file*/delete
+      #:exists 'replace output-html
+      (λ (out)
+        (displayln "<!DOCTYPE html>" out)
+        (displayln (xexpr->string
+                    (post-xexpr the-post output-html))
+                   out)))]))
 
 (define (post-xexpr the-post page-path)
   (match-define (post title date tags blurb more? body) the-post)

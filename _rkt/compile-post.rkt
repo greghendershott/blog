@@ -8,6 +8,7 @@
          (multi-in frog (enhance-body paths))
          xml/xexpr
          "post.rkt"
+         "util.rkt"
          "xexpr2text.rkt")
 
 ;; 1. Create a .rktd file something like the Frog post-struct.rkt
@@ -30,18 +31,16 @@
      (define the-post (read-post (build-path source)))
 
      (make-parent-directory* rktd)
-     (with-handlers ([exn? (λ (e)
-                             (when (file-exists? rktd)
-                               (delete-file rktd))
-                             (raise e))])
-       (call-with-output-file #:exists 'replace rktd
-         (λ (out) (write the-post out))))
+     (call-with-output-file*/delete
+      #:exists 'replace rktd
+      (λ (out) (write the-post out)))
 
      (make-directory* (build-path (path-only rktd) "tags"))
      (for ([tag (in-list (cons "all" (post-tags the-post)))])
        (define tag-file (build-path (path-only rktd) "tags" (slug tag)))
-       (call-with-output-file #:exists 'append tag-file
-         (λ (out) (displayln rktd out))))]))
+       (call-with-output-file*/delete
+        #:exists 'append tag-file
+        (λ (out) (displayln rktd out))))]))
 
 (define/contract (read-post source)
   (-> path? (or/c post? #f))

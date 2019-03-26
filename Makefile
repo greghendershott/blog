@@ -10,10 +10,9 @@
 
 # Configure where are sources, build cache, and root of the web site
 # output. Below is something suitable for how I use GitHub Pages. But
-# someone else might want the sources in the root of the repo, and OUT
+# someone else might want $(POSTS) in the root of the repo, and $(OUT)
 # to be a subdir that is .gitignored because it is copied to a web
-# server. In any case, everyone would .gitignore CACHE.
-
+# server. In any case, everyone would .gitignore $(CACHE).
 POSTS     := _src/posts
 CACHE     := .cache
 OUT       := .
@@ -26,10 +25,10 @@ POST-SOURCES := $(wildcard $(POSTS)/*.md)
 POST-CACHES  := $(patsubst %.md,$(CACHE)/%.rktd,$(notdir $(POST-SOURCES)))
 POST-HTMLS   := $(patsubst %.rktd,$(OUT)/%.html,$(notdir $(POST-CACHES)))
 
-TAG-SOURCES    := $(wildcard $(CACHE)/tags/*)
-TAG-HTMLS      := $(patsubst %,$(OUT)/tags/%.html,$(notdir $(TAG-SOURCES)))
-TAG-ATOM-FEEDS := $(patsubst %,$(OUT)/feeds/%.atom.xml,$(notdir $(TAG-SOURCES)))
-TAG-RSS-FEEDS  := $(patsubst %,$(OUT)/feeds/%.rss.xml,$(notdir $(TAG-SOURCES)))
+TAG-CACHES     := $(wildcard $(CACHE)/tags/*)
+TAG-HTMLS      := $(patsubst %,$(OUT)/tags/%.html,$(notdir $(TAG-CACHES)))
+TAG-ATOM-FEEDS := $(patsubst %,$(OUT)/feeds/%.atom.xml,$(notdir $(TAG-CACHES)))
+TAG-RSS-FEEDS  := $(patsubst %,$(OUT)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
 
 # Racket commands
 #
@@ -39,13 +38,13 @@ RENDER-POST        := racket _rkt/render-post.rkt
 MAKE-TAG-INDEX     := racket _rkt/make-tag-index.rkt
 MAKE-TAG-ATOM-FEED := racket _rkt/make-tag-atom-feed.rkt
 MAKE-TAG-RSS-FEED  := racket _rkt/make-tag-rss-feed.rkt
-
+PREVIEW            := racket _rkt/preview.rkt
 
 ######################################################################
 
 # Given my current level of Makefile fu, I can only see how to make
 # this work with two distinct passes. The main issue seems to be that
-# compile-post.rkt needs to produce $(TAG-SOURCES), which in turn are
+# compile-post.rkt needs to produce $(TAG-CACHES), which in turn are
 # sources for index and feed files. My attempts to do it as one single
 # chain never worked.
 
@@ -57,35 +56,42 @@ all:
 .PHONY: clean
 clean: clean-posts-cache clean-htmls-and-feeds
 
+.PHONY: preview
+preview: all
+	$(PREVIEW) $<
+
 ######################################################################
 # Stage 1
 
-.PHONY: posts-cache
+.PHONY: posts-cache clean-posts-cache
 posts-cache: $(POST-CACHES)
 
-$(CACHE)/%.rktd: $(POSTS)/%.md
-	$(COMPILE-POST) $< $@
-
-.PHONY: clean-posts-cache
 clean-posts-cache:
 	-rm $(CACHE)/tags/*
 	-rmdir $(CACHE)/tags
 	-rm $(CACHE)/*
 	-rmdir $(CACHE)
 
+$(CACHE)/%.rktd: $(POSTS)/%.md
+	$(COMPILE-POST) $< $@
+
 
 ######################################################################
 # Stage 2
 
-.PHONY: hmtls-and-feeds
+.PHONY: hmtls-and-feeds clean-htmls-and-feeds
 htmls-and-feeds: htmls feeds
 
-.PHONY:  clean-htmls-and-feeds
 clean-htmls-and-feeds: clean-htmls clean-feeds
 
 
-.PHONY: hmtls
+.PHONY: hmtls clean-htmls
 htmls: $(POST-HTMLS) $(TAG-HTMLS) $(OUT)/index.html
+
+clean-htmls:
+	-rm $(POST-HTMLS)
+	-rm $(TAG-HTMLS)
+	-rm $(OUT)/index.html
 
 $(OUT)/%.html: $(CACHE)/%.rktd
 	$(RENDER-POST) $< $@
@@ -96,23 +102,16 @@ $(OUT)/tags/%.html: $(CACHE)/tags/%
 $(OUT)/index.html: $(OUT)/tags/all.html
 	cp $< $@
 
-.PHONY: clean-htmls
-clean-htmls:
-	-rm $(OUT)/*.html
-	-rm $(OUT)/tags/*.html
-	-rmdir $(OUT)/tags
 
+.PHONY: feeds clean-feeds
+feeds: $(TAG-ATOM-FEEDS) $(TAG-RSS-FEEDS)
 
-.PHONY: feeds
-feeds: $(TAG-ATOM-FEEDS)  $(TAG-RSS-FEEDS)
+clean-feeds:
+	-rm $(OUT)/feeds/*.xml
+	-rmdir $(OUT)/feeds
 
 $(OUT)/feeds/%.atom.xml: $(CACHE)/tags/%
 	$(MAKE-TAG-ATOM-FEED) $< $@
 
 $(OUT)/feeds/%.rss.xml: $(CACHE)/tags/%
 	$(MAKE-TAG-RSS-FEED) $< $@
-
-.PHONY: clean-feeds
-clean-feeds:
-	-rm $(OUT)/feeds/*.xml
-	-rmdir $(OUT)/feeds
