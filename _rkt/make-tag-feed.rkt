@@ -1,7 +1,6 @@
 #lang at-exp racket/base
 
 (require racket/require
-         net/uri-codec
          (multi-in racket (date file format function match path string))
          threading
          (only-in markdown xexpr->string)
@@ -207,9 +206,3 @@
      (check-equal? (rfc-8601->rfc-822 EST-date)
                    "Sat, 11 Oct 2014 04:00:00 UT")]
     [_ (void)]))
-
-;;; urn
-
-(define (urn uri-path)
-  ;; Note that URNs have a more restricted syntax than URIs.
-  (~a (host/urn) ":" (uri-encode uri-path)))
