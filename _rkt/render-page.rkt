@@ -1,7 +1,7 @@
 #lang racket/base
 
 (require racket/require
-         (multi-in racket (contract format))
+         (multi-in racket (contract date format))
          xml/xexpr)
 
 (provide page-xexpr)
@@ -22,29 +22,37 @@
       #:contents    (listof xexpr/c)
       xexpr/c)
   `(html ([lang "en"])
-         (head ()
-               (meta ([charset "utf-8"]))
-               (title () ,title)
-               (meta ([name "description"] [content ,description]))
-               (meta ([name "author"] [content "Greg Hendershott"]))
-               (meta ([name "keywords"] [content ,keywords]))
-               (meta ([name "viewport"] [content "width=device-width, initial-scale=1.0"]))
-               (link ([rel "icon"] [href "/favicon.ico"]))
-               (link ([rel "canonical"] [href ,(full-uri page-path)]))
-               (link ([rel "stylesheet"] [type "text/css"] [href "main.css"]))
-               (link ([rel "alternate"]
-                      [type "application/atom+xml"]
-                      [title "Atom Feed"]
-                      [href ,(full-uri atom-path)]))
-               (link ([rel "alternate"]
-                      [type "application/rss+xml"]
-                      [title "RSS Feed"]
-                      [href ,(full-uri rss-path)])))
-         (body ()
-               (header ())
-               (main ()
-                     ,@contents)
-               (footer ()))))
+    (head ()
+     (meta ([charset "utf-8"]))
+     (title () ,title)
+     (meta ([name "description"] [content ,description]))
+     (meta ([name "author"] [content "Greg Hendershott"]))
+     (meta ([name "keywords"] [content ,keywords]))
+     (meta ([name "viewport"] [content "width=device-width, initial-scale=1.0"]))
+     (link ([rel "icon"] [href "/favicon.ico"]))
+     (link ([rel "canonical"] [href ,(full-uri page-path)]))
+     (link ([rel "stylesheet"] [type "text/css"] [href "main.css"]))
+     (link ([rel "alternate"]
+            [type "application/atom+xml"]
+            [title "Atom Feed"]
+            [href ,(full-uri atom-path)]))
+     (link ([rel "alternate"]
+            [type "application/rss+xml"]
+            [title "RSS Feed"]
+            [href ,(full-uri rss-path)])))
+    (body ()
+     ,(header)
+     (main () ,@contents)
+     ,(footer))))
+
+(define (header)
+  `(header ()))
+
+(define (footer)
+  `(footer ()
+    (p ()
+     "Copyright " copy " 2012" ndash ,(~a (date-year (current-date)))
+     " by Greg" nbsp "Hendershott. All rights reserved.")))
 
 (define (full-uri uri-path)
   (~a "https://www.greghendershott.com/" uri-path))

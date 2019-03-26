@@ -39,6 +39,6 @@
                            (file-name-from-path
                             (path-replace-extension rktd #".html")))))
      `(article ()
-               (h2 () (a ([href ,href])
-                         ,title))
-               ,@blurb))))
+       (h2 () (a ([href ,href])
+               ,title))
+       ,@blurb))))

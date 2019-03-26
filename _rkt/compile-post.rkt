@@ -62,11 +62,11 @@
         (enhance-body blurb)
         more?
         `((article ()
-                   (header ()
-                           (h1 () ,title)
-                           ,(datetime+tags->xexpr datetime tags))
-                   ,@(enhance-body body)
-                   (footer ())))))
+           (header ()
+            (h1 () ,title)
+            ,(datetime+tags->xexpr datetime tags))
+           ,@(enhance-body body)
+           (footer ())))))
 
 (define/contract (enhance-body xs)
   (-> (listof xexpr/c) (listof xexpr/c))
