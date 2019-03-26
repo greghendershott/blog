@@ -30,15 +30,16 @@ TAG-HTMLS      := $(patsubst %,$(OUT)/tags/%.html,$(notdir $(TAG-CACHES)))
 TAG-ATOM-FEEDS := $(patsubst %,$(OUT)/feeds/%.atom.xml,$(notdir $(TAG-CACHES)))
 TAG-RSS-FEEDS  := $(patsubst %,$(OUT)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
 
+## TODO: Non-post sources.
+
 # Racket commands
 #
 # Note: For now these are in _rkt subdir. Someday move to a package?
-COMPILE-POST       := racket _rkt/compile-post.rkt
-RENDER-POST        := racket _rkt/render-post.rkt
-MAKE-TAG-INDEX     := racket _rkt/make-tag-index.rkt
-MAKE-TAG-ATOM-FEED := racket _rkt/make-tag-atom-feed.rkt
-MAKE-TAG-RSS-FEED  := racket _rkt/make-tag-rss-feed.rkt
-PREVIEW            := racket _rkt/preview.rkt
+COMPILE-POST   := racket _rkt/compile-post.rkt
+RENDER-POST    := racket _rkt/render-post.rkt
+MAKE-TAG-INDEX := racket _rkt/make-tag-index.rkt
+MAKE-TAG-FEED  := racket _rkt/make-tag-feed.rkt
+PREVIEW        := racket _rkt/preview.rkt
 
 ######################################################################
 
@@ -111,7 +112,7 @@ clean-feeds:
 	-rmdir $(OUT)/feeds
 
 $(OUT)/feeds/%.atom.xml: $(CACHE)/tags/%
-	$(MAKE-TAG-ATOM-FEED) $< $@
+	$(MAKE-TAG-FEED) $< atom $@
 
 $(OUT)/feeds/%.rss.xml: $(CACHE)/tags/%
-	$(MAKE-TAG-RSS-FEED) $< $@
+	$(MAKE-TAG-FEED) $< rss $@

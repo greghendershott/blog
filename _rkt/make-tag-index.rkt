@@ -13,6 +13,8 @@
 (define (main)
   (match (current-command-line-arguments)
     [(vector tag-file output-html)
+     (define tag (path->string (file-name-from-path tag-file)))
+     ;; FIXME Sort descending by datetime
      (define the-posts (for/list ([rktd (in-list (file->lines tag-file))])
                          (cons rktd (call-with-input-file* rktd read))))
      (make-directory* (path-only output-html))
@@ -21,9 +23,7 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (index-xexpr (path->string (file-name-from-path tag-file))
-                                 the-posts
-                                 output-html))
+                    (index-xexpr tag the-posts output-html))
                    out)))]))
 
 (define/contract (index-xexpr tag the-posts page-path)

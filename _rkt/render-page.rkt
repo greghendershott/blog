@@ -2,7 +2,8 @@
 
 (require racket/require
          (multi-in racket (contract date format))
-         xml/xexpr)
+         xml/xexpr
+         "site.rkt")
 
 (provide page-xexpr)
 
@@ -51,8 +52,7 @@
 (define (footer)
   `(footer ()
     (p ()
+     "Created using a Makefile, Racket, and 'tadpole'.")
+    (p ()
      "Copyright " copy " 2012" ndash ,(~a (date-year (current-date)))
      " by Greg" nbsp "Hendershott. All rights reserved.")))
-
-(define (full-uri uri-path)
-  (~a "https://www.greghendershott.com/" uri-path))
