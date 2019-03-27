@@ -6,6 +6,7 @@
          (only-in "compile-post.rkt" datetime+tags->xexpr)
          "post.rkt"
          "render-page.rkt"
+         "tag-posts.rkt"
          "util.rkt")
 
 (module+ main (main))
@@ -14,9 +15,7 @@
   (match (current-command-line-arguments)
     [(vector tag-file output-html)
      (define tag (path->string (file-name-from-path tag-file)))
-     ;; FIXME Sort descending by datetime
-     (define the-posts (for/list ([rktd (in-list (file->lines tag-file))])
-                         (cons rktd (call-with-input-file* rktd read))))
+     (define the-posts (tag-file->sorted-posts tag-file))
      (make-directory* (path-only output-html))
      (call-with-output-file*/delete
       #:exists 'replace output-html
