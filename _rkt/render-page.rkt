@@ -32,7 +32,7 @@
      (meta ([name "viewport"] [content "width=device-width, initial-scale=1.0"]))
      (link ([rel "icon"] [href "/favicon.ico"]))
      (link ([rel "canonical"] [href ,(full-uri page-path)]))
-     (link ([rel "stylesheet"] [type "text/css"] [href "main.css"]))
+     (link ([rel "stylesheet"] [type "text/css"] [href "/main.css"]))
      (link ([rel "alternate"]
             [type "application/atom+xml"]
             [title "Atom Feed"]
@@ -43,14 +43,20 @@
             [href ,(full-uri rss-path)])))
     (body ()
      ,(header)
-     (main () ,@contents)
+     (main ([class "site"]) ,@contents)
      ,(footer))))
 
 (define (header)
-  `(header ()))
+  `(header ([class "site"])
+    (nav
+     (ul
+      (li (a ([href "/"]) "Greg Hendershott"))
+      (li (a ([href "/tags/index.html"]) "Tags"))
+      (li (a ([href "/feeds/all.atom.xml"]) "Atom"))
+      (li (a ([href "/feeds/all.rss.xml"]) "RSS"))))))
 
 (define (footer)
-  `(footer ()
+  `(footer ([class "site"])
     (p ()
      "Created using a Makefile, Racket, and 'tadpole'.")
     (p ()

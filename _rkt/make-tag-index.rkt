@@ -40,7 +40,7 @@
          ,(datetime+tags->xexpr datetime tags))
         ,@blurb
         ,@(if more?
-              `((footer () (a ([href ,href]) (em () "More" hellip))))
+              `((footer () (a ([href ,href]) (em () hellip "More" hellip))))
               `()))))
   (define-values (page-title contents)
     (if (equal? tag "all")

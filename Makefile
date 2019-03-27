@@ -38,6 +38,7 @@ TAG-RSS-FEEDS  := $(patsubst %,$(OUT)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
 COMPILE-POST   := racket _rkt/compile-post.rkt
 RENDER-POST    := racket _rkt/render-post.rkt
 MAKE-TAG-INDEX := racket _rkt/make-tag-index.rkt
+MAKE-TAG-LIST  := racket _rkt/make-tag-list.rkt
 MAKE-TAG-FEED  := racket _rkt/make-tag-feed.rkt
 PREVIEW        := racket _rkt/preview.rkt
 
@@ -57,7 +58,7 @@ all:
 
 clean: clean-posts-cache clean-htmls-and-feeds
 
-preview: all
+preview: $(OUT)/index.html all
 	$(PREVIEW) $<
 
 ######################################################################
@@ -91,7 +92,8 @@ clean-htmls-and-feeds: clean-htmls clean-feeds
 
 .PHONY: hmtls clean-htmls
 
-htmls: $(POST-HTMLS) $(TAG-HTMLS) $(OUT)/index.html
+htmls: $(POST-HTMLS) $(TAG-HTMLS) \
+       $(OUT)/tags/index.html $(OUT)/index.html $(OUT)/main.css
 
 clean-htmls:
 	-rm $(POST-HTMLS)
@@ -105,9 +107,14 @@ $(OUT)/%.html: $(CACHE)/%.rktd _rkt/render-page.rkt
 $(OUT)/tags/%.html: $(CACHE)/tags/% _rkt/render-page.rkt
 	$(MAKE-TAG-INDEX) $< $@
 
-$(OUT)/index.html: $(OUT)/tags/all.html _rkt/render-page.rkt
+$(OUT)/tags/index.html: $(TAG-CACHES) _rkt/render-page.rkt _rkt/make-tag-list.rkt
+	$(MAKE-TAG-LIST) $(CACHE)/tags/ $@
+
+$(OUT)/index.html: $(OUT)/tags/all.html _rkt/render-page.rkt _rkt/make-tag-feed.rkt
 	cp $< $@
 
+$(OUT)/main.css: _rkt/styles.rkt
+	racket _rkt/styles.rkt $@
 
 # Feeds
 
