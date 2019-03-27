@@ -9,13 +9,10 @@
 # easier than the Makefile contortions required, IMHO.
 
 # Configure where are sources, build cache, and root of the web site
-# output. Below is something suitable for how I use GitHub Pages. But
-# someone else might want $(POSTS) in the root of the repo, and $(OUT)
-# to be a subdir that is .gitignored because it is copied to a web
-# server. In any case, everyone would .gitignore $(CACHE).
-POSTS     := _src/posts
+# output.
+POSTS     := src/posts
 CACHE     := .cache
-OUT       := .
+WWW       := www
 
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
@@ -23,24 +20,25 @@ OUT       := .
 ## TODO: Generate from Scribble sources, too
 POST-SOURCES := $(wildcard $(POSTS)/*.md)
 POST-CACHES  := $(patsubst %.md,$(CACHE)/%.rktd,$(notdir $(POST-SOURCES)))
-POST-HTMLS   := $(patsubst %.rktd,$(OUT)/%.html,$(notdir $(POST-CACHES)))
+POST-HTMLS   := $(patsubst %.rktd,$(WWW)/%.html,$(notdir $(POST-CACHES)))
 
 TAG-CACHES     := $(wildcard $(CACHE)/tags/*)
-TAG-HTMLS      := $(patsubst %,$(OUT)/tags/%.html,$(notdir $(TAG-CACHES)))
-TAG-ATOM-FEEDS := $(patsubst %,$(OUT)/feeds/%.atom.xml,$(notdir $(TAG-CACHES)))
-TAG-RSS-FEEDS  := $(patsubst %,$(OUT)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
+TAG-HTMLS      := $(patsubst %,$(WWW)/tags/%.html,$(notdir $(TAG-CACHES)))
+TAG-ATOM-FEEDS := $(patsubst %,$(WWW)/feeds/%.atom.xml,$(notdir $(TAG-CACHES)))
+TAG-RSS-FEEDS  := $(patsubst %,$(WWW)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
 
 ## TODO: Non-post sources.
 
 # Racket commands
 #
-# Note: For now these are in _rkt subdir. Someday move to a package?
-COMPILE-POST   := racket _rkt/compile-post.rkt
-RENDER-POST    := racket _rkt/render-post.rkt
-MAKE-TAG-INDEX := racket _rkt/make-tag-index.rkt
-MAKE-TAG-LIST  := racket _rkt/make-tag-list.rkt
-MAKE-TAG-FEED  := racket _rkt/make-tag-feed.rkt
-PREVIEW        := racket _rkt/preview.rkt
+# Note: For now these are in rkt subdir. Someday move the generic
+# pieces to a "tadpole" package?
+COMPILE-POST   := racket rkt/compile-post.rkt
+RENDER-POST    := racket rkt/render-post.rkt
+MAKE-TAG-INDEX := racket rkt/make-tag-index.rkt
+MAKE-TAG-LIST  := racket rkt/make-tag-list.rkt
+MAKE-TAG-FEED  := racket rkt/make-tag-feed.rkt
+PREVIEW        := racket rkt/preview.rkt
 
 ######################################################################
 
@@ -58,7 +56,7 @@ all:
 
 clean: clean-posts-cache clean-htmls-and-feeds
 
-preview: $(OUT)/index.html all
+preview: $(WWW)/index.html all
 	$(PREVIEW) $<
 
 ######################################################################
@@ -93,28 +91,28 @@ clean-htmls-and-feeds: clean-htmls clean-feeds
 .PHONY: hmtls clean-htmls
 
 htmls: $(POST-HTMLS) $(TAG-HTMLS) \
-       $(OUT)/tags/index.html $(OUT)/index.html $(OUT)/main.css
+       $(WWW)/tags/index.html $(WWW)/index.html $(WWW)/main.css
 
 clean-htmls:
 	-rm $(POST-HTMLS)
 	-rm $(TAG-HTMLS)
-	-rm $(OUT)/index.html
-	-rmdir $(OUT)/tags
+	-rm $(WWW)/index.html
+	-rmdir $(WWW)/tags
 
-$(OUT)/%.html: $(CACHE)/%.rktd _rkt/render-page.rkt
+$(WWW)/%.html: $(CACHE)/%.rktd rkt/render-page.rkt
 	$(RENDER-POST) $< $@
 
-$(OUT)/tags/%.html: $(CACHE)/tags/% _rkt/render-page.rkt
+$(WWW)/tags/%.html: $(CACHE)/tags/% rkt/render-page.rkt
 	$(MAKE-TAG-INDEX) $< $@
 
-$(OUT)/tags/index.html: $(TAG-CACHES) _rkt/render-page.rkt _rkt/make-tag-list.rkt
+$(WWW)/tags/index.html: $(TAG-CACHES) rkt/render-page.rkt rkt/make-tag-list.rkt
 	$(MAKE-TAG-LIST) $(CACHE)/tags/ $@
 
-$(OUT)/index.html: $(OUT)/tags/all.html _rkt/render-page.rkt _rkt/make-tag-feed.rkt
+$(WWW)/index.html: $(WWW)/tags/all.html rkt/render-page.rkt rkt/make-tag-feed.rkt
 	cp $< $@
 
-$(OUT)/main.css: _rkt/styles.rkt
-	racket _rkt/styles.rkt $@
+$(WWW)/main.css: rkt/styles.rkt
+	racket rkt/styles.rkt $@
 
 # Feeds
 
@@ -123,11 +121,22 @@ $(OUT)/main.css: _rkt/styles.rkt
 feeds: $(TAG-ATOM-FEEDS) $(TAG-RSS-FEEDS)
 
 clean-feeds:
-	-rm $(OUT)/feeds/*.xml
-	-rmdir $(OUT)/feeds
+	-rm $(WWW)/feeds/*.xml
+	-rmdir $(WWW)/feeds
 
-$(OUT)/feeds/%.atom.xml: $(CACHE)/tags/%
+$(WWW)/feeds/%.atom.xml: $(CACHE)/tags/%
 	$(MAKE-TAG-FEED) $< atom $@
 
-$(OUT)/feeds/%.rss.xml: $(CACHE)/tags/%
+$(WWW)/feeds/%.rss.xml: $(CACHE)/tags/%
 	$(MAKE-TAG-FEED) $< rss $@
+
+######################################################################
+# Deploy
+
+AWS    := aws --profile greg
+BUCKET := s3://www.greghendershott.com
+
+
+.PHONY: deploy
+deploy:
+	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) $(BUCKET)

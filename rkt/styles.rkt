@@ -73,7 +73,7 @@
             padding: 1px 4px}})
 
 (define pygments-styles
-  @~a{.linenos pre {font-size: 75%;
+  @~a{.linenos pre {font-size: 85%;
                     color: #ddd;
                     background-color: #fff;
                     border: none}
