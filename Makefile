@@ -91,12 +91,14 @@ clean-htmls-and-feeds: clean-htmls clean-feeds
 .PHONY: hmtls clean-htmls
 
 htmls: $(POST-HTMLS) $(TAG-HTMLS) \
-       $(WWW)/tags/index.html $(WWW)/index.html $(WWW)/main.css
+       $(WWW)/tags/index.html $(WWW)/index.html $(WWW)/main.css \
+       rkt/render-page.rkt rkt/site.rkt
 
 clean-htmls:
 	-rm $(POST-HTMLS)
 	-rm $(TAG-HTMLS)
 	-rm $(WWW)/index.html
+	-rm $(WWW)/tags/index.html
 	-rmdir $(WWW)/tags
 
 $(WWW)/%.html: $(CACHE)/%.rktd rkt/render-page.rkt
