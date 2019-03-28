@@ -83,7 +83,8 @@
                    background-color: #fdf6e3;
                    padding: 10px;
                    border: 1px solid #ccc;
-                   border-radius: 4px}
+                   border-radius: 4px;
+                   min-width: 40em}
 
       .hll {background-color: #ffffcc}
       .p {color: #999} @;Parens
