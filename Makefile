@@ -136,9 +136,13 @@ $(WWW)/feeds/%.rss.xml: $(CACHE)/tags/%
 # Deploy
 
 AWS    := aws --profile greg
-BUCKET := s3://www.greghendershott.com
+BUCKET := www.greghendershott.com
 
+.PHONY: deploy full-deploy
 
-.PHONY: deploy
 deploy:
-	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) $(BUCKET)
+	$(AWS) s3 sync --no-follow-symlinks $(WWW) s3://$(BUCKET)
+
+full-deploy:
+	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) s3://$(BUCKET)
+	racket rkt/old-post-redirs.rkt $(BUCKET)

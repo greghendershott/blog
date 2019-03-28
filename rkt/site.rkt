@@ -10,7 +10,7 @@
          author)
 
 (define (scheme)
-  "https")
+  "http")
 
 (define (host)
   "www.greghendershott.com")
