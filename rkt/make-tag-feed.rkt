@@ -64,7 +64,7 @@
     (title ([type "text"]) ,title)
     (link ([rel "alternate"]
            [href ,href]))
-    (id ,(urn href))
+    (id ,(urn (path->string (path-replace-extension (file-name-from-path rktd) #".html"))))
     (published ,(rfc-8601/universal datetime))
     (updated ,(rfc-8601/universal datetime))
     (author (name ,(author)))
@@ -107,7 +107,8 @@
   `(item
     (title ,title)
     (link ,href)
-    (guid ([isPermaLink "false"]) ,(urn href))
+    (guid ([isPermaLink "false"])
+     ,(urn (path->string (path-replace-extension (file-name-from-path rktd) #".html"))))
     (pubDate ,(rfc-8601->rfc-822 datetime))
     ;; Not author: <https://validator.w3.org/feed/docs/error/InvalidContact.html>
     (dc:creator ,(author))

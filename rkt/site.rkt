@@ -16,7 +16,7 @@
   "www.greghendershott.com")
 
 (define (host/urn)
-  "www-greghendershott-com")
+  "urn:www-greghendershott-com")
 
 (define (full-uri uri-path)
   (~a (scheme) "://" (host) "/" uri-path))
