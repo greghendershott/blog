@@ -2,14 +2,13 @@
 
 (require racket/require
          (multi-in racket (contract file format list match path string))
-         markdown
+         (only-in markdown parse-markdown)
          threading
          (only-in srfi/1 break)
          (multi-in frog (enhance-body paths))
-         xml/xexpr
          "post.rkt"
          "util.rkt"
-         "xexpr2text.rkt")
+         "xexpr.rkt")
 
 (provide datetime+tags->xexpr) ;for tag index
 

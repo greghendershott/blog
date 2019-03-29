@@ -1,14 +1,38 @@
 #lang racket/base
 
 (require racket/require
-         (multi-in racket (format match))
-         (multi-in aws (keys s3)))
+         (multi-in racket (file format match))
+         (multi-in aws (keys s3))
+         "util.rkt"
+         "xexpr.rkt")
 
 (module+ main (main))
 
 (define (main)
   (match (current-command-line-arguments)
-    [(vector bucket) (put-redirs bucket)]))
+    [(vector "s3" bucket) (put-redirs bucket)]
+    [(vector "refresh" www) (make-redir-htmls www)]))
+
+(define (make-redir-htmls www)
+  (for ([p (in-list old-posts)])
+    (define-values (old new) (old+new p))
+    (define path (build-path www old))
+    (make-parent-directory* path)
+    (call-with-output-file*/delete
+     path #:exists 'replace
+     (λ (out)
+       (displayln "<!DOCTYPE html>" out)
+        (displayln (xexpr->string
+                    `(html
+                      (head
+                       (meta
+                        [http-equv "refresh"]
+                        [content ,(~a "3; url=") new]))
+                      (body
+                       (p "This page has moved to "
+                        (a ([href ,new]) new)
+                        ". Will redirect in a few seconds..."))))
+                   out)))))
 
 (define (put-redirs bucket)
   (parameterize ([aws-cli-profile "greg"])

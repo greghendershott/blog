@@ -2,11 +2,11 @@
 
 (require racket/require
          (multi-in racket (contract file format match path string))
-         xml
          (only-in "compile-post.rkt" datetime+tags->xexpr)
          "post.rkt"
          "render-page.rkt"
-         "util.rkt")
+         "util.rkt"
+         "xexpr.rkt")
 
 (module+ main (main))
 

@@ -62,8 +62,11 @@
           font-size: 1.5em}
       h2 {font-size: 1.3em}
 
-      article {padding-bottom: 18px;
-               border-bottom: 2px dashed #ccc}
+      article.index {padding-bottom: 18px;
+                     border-bottom: 2px dashed #ccc}
+
+      div.footnotes {font-size: 90%;
+                     border-top: 1px dotted}
 
       code {font-family: monospace;
             font-size: 90%;

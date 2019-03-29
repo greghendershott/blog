@@ -3,9 +3,12 @@
 (require racket/require
          (multi-in racket (contract format function match string))
          threading
-         xml)
+         (only-in markdown xexpr->string) ;not the one from xml
+         (only-in xml xexpr/c valid-char?))
 
-(provide xexprs->description
+(provide xexpr/c
+         xexpr->string
+         xexprs->description
          xexpr->markdown)
 
 (module+ test

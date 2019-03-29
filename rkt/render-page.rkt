@@ -2,8 +2,8 @@
 
 (require racket/require
          (multi-in racket (contract date format))
-         xml/xexpr
-         "site.rkt")
+         "site.rkt"
+         "xexpr.rkt")
 
 (provide page-xexpr)
 

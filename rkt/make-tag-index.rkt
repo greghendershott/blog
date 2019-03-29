@@ -2,12 +2,12 @@
 
 (require racket/require
          (multi-in racket (contract file format match path))
-         xml
          (only-in "compile-post.rkt" datetime+tags->xexpr)
          "post.rkt"
          "render-page.rkt"
          "tag-posts.rkt"
-         "util.rkt")
+         "util.rkt"
+         "xexpr.rkt")
 
 (module+ main (main))
 
@@ -33,7 +33,7 @@
       (define href (~a "/" (path->string
                             (file-name-from-path
                              (path-replace-extension rktd #".html")))))
-      `(article ()
+      `(article ([class "index"])
         (header ()
          (h2 () (a ([href ,href]) ,title))
          ,(datetime+tags->xexpr datetime tags))

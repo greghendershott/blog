@@ -3,11 +3,11 @@
 (require racket/require
          (multi-in racket (date file format function match path string))
          threading
-         (only-in markdown xexpr->string)
          "post.rkt"
          "site.rkt"
          "tag-posts.rkt"
-         "util.rkt")
+         "util.rkt"
+         "xexpr.rkt")
 
 (module+ main (main))
 

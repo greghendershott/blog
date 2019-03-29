@@ -1,0 +1,81 @@
+==================================================================
+https://keybase.io/greghendershott
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://www.greghendershott.com
+  * I am greghendershott (https://keybase.io/greghendershott) on keybase.
+  * I have a public key with fingerprint 2E96 43B5 C285 5815 6140  8A12 81A9 7656 9121 EC46
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "010117c0b4d055dfbadc72b6c93fd9fb807fca09fbfb1202481f587521198a1358c20a",
+      "fingerprint": "2e9643b5c285581561408a1281a976569121ec46",
+      "host": "keybase.io",
+      "key_id": "81a976569121ec46",
+      "kid": "010117c0b4d055dfbadc72b6c93fd9fb807fca09fbfb1202481f587521198a1358c20a",
+      "uid": "2b21f453c2aecd3a45e65b9563f3c500",
+      "username": "greghendershott"
+    },
+    "merkle_root": {
+      "ctime": 1507508299,
+      "hash_meta": "cd7c7c560e0099f0ffc10d12d289e236e4657cfddcb382d0de16b1c57ed83724",
+      "seqno": 1542411
+    },
+    "revoke": {
+      "sig_ids": [
+        "8db48c55fc0235251721230bf4d8f0f6fd5de131ff0001960c0a5db3f2d2c7000f"
+      ]
+    },
+    "service": {
+      "hostname": "www.greghendershott.com",
+      "protocol": "http:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1507508320,
+  "expire_in": 157680000,
+  "prev": "c74e0fe771ccab43a43d706814d6281423fbfaf1e11ee65c5a99867485e8c7e6",
+  "seqno": 22,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.74
+Comment: https://keybase.io/crypto
+
+yMLAAnicrVNdaB1FGL1pTKqRiJVKDVSFbaTYxDAzO397A6a0oiANFaRaTe11d+ab
+e7c39+7N7iZpKaloowVj8SHWlAgBiWBpaUERbGtpS2hE8D4IfQj1hyBFJUULjb6I
+Njp7qYjio0/zw/nOOXO+by61N+famk6dmN7Wz1a3N30+d2g499yXF1/c7wSR3ufk
+9ztlaCwwqCFJC+VQO3kHYYSxUCigGjGmTeBrJUjAleca7ZlAImGUj+zOBJggQiU2
+TApGMPakj10mFUG+0+2YsFqEuBaH1dTSEvA4dQOmiGRMYsYxRRZOJPY9wRn3MMGg
+KLeFpSjJKqy5wE+gJ4zsnT0UGvb+A/8/+x5u0JGAYEOZq4gPSrs+ZcBZ4DHuGlcx
+hDJgAnHVr4BFF2MolqCqIU5KUZo6Y91OBeLyIBTiKEqzjFUaZkjMkGBIEs+z7/ST
+UqECqW8JlBZKKMYRIOR5BhmjMNKYaCI9IC4HyplQRmsVuJJopAHzACsmQEtXEGrt
+JDBUjTIFSijG1kEMI1EZMvEkLNr0Eic/4EgdUKkYMwoRlxGGBcHERYGhWlpZbjSz
+3C42BiGEPY4U8pkOXGOtKGHvjPPCWCYWj4SqQZ6161YMo6OjPf+KokdFFWuuFkdp
+pKJBCyqlaS2fJZTuqzWKICjcoisEYVXbsbEFI7Y+jKr2PRb5z/Bcgrod2FsLYyiE
+GYIJLq0zlMnASJamoIAMCIGV8gNqu+dqgbjEVHM7cZS4dgp8gwFjsG1VzPc8yQWV
+DKQSwP9OkxDr0y9aTpth1U+HY3DG5i7uui3X1JZrbVmV/adc2x13//XLnp6/PTfb
+AYtPHPh95tontYmxhw7ueKe5aaD11GB9cnLo+77e8UcWjvS//DZ6fabzyqZDe5LL
+K+M3eo/f/+0vrcs/vL9Mrq+6lv/0qwdWL3V0vLHr8KWpe986vPanO3ux9+C2LXh9
+x/TakesTLTu3L2946vTijaNdJ9e3/FavvPbslY27v5juWggPks3JUt/Gy6Nbz96T
+0oUj81vvq9WnBvp7Xl1T3FM4mRwd/3H3hy1nD0yp+vwf51b6Zt+b/Ob5lWPnT/98
+/OvyhiX/2KOLv5bGX3n4zGMX1nXN7Xy8uW1Cf7Cl/ebsRzuuxlPy3Gd3FWbq5dnk
+yQtD6zrffOmZ2t6+m9FcZ/3Ewub5j6+e4e9u/+78n64bhgc=
+=hTNe
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/greghendershott
+
+==================================================================

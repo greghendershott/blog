@@ -1,23 +1,13 @@
-# A big simplifying assumption here is that we won't support post HTML
-# outs like {year}/{month}/{title}.html. Instead, the HTMLs are all in
-# one flat directory, with the same basename as their source. So, no
-# "permalink patterns" magic. Instead, name the source files the way
-# you want the URL to be, including a date or not, as you prefer.
-#
-# That does mean the URLs won't be backward compatible, but, we'll
-# just need to handle that with server or meta redirects. Doing so is
-# easier than the Makefile contortions required, IMHO.
-
 # Configure where are sources, build cache, and root of the web site
 # output.
-POSTS     := src/posts
+SRC       := src
+POSTS     := $(SRC)/posts
 CACHE     := .cache
 WWW       := www
 
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
 # like post .md files, and from those build lists of targets.
-## TODO: Generate from Scribble sources, too
 POST-SOURCES := $(wildcard $(POSTS)/*.md)
 POST-CACHES  := $(patsubst %.md,$(CACHE)/%.rktd,$(notdir $(POST-SOURCES)))
 POST-HTMLS   := $(patsubst %.rktd,$(WWW)/%.html,$(notdir $(POST-CACHES)))
@@ -27,7 +17,8 @@ TAG-HTMLS      := $(patsubst %,$(WWW)/tags/%.html,$(notdir $(TAG-CACHES)))
 TAG-ATOM-FEEDS := $(patsubst %,$(WWW)/feeds/%.atom.xml,$(notdir $(TAG-CACHES)))
 TAG-RSS-FEEDS  := $(patsubst %,$(WWW)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
 
-## TODO: Non-post sources.
+NON-POST-SOURCES := $(wildcard $(SRC)/non-posts/*.md)
+NON-POST-HTMLS   := $(patsubst %.md,$(WWW)/%.html,$(notdir $(NON-POST-SOURCES)))
 
 # Racket commands
 #
@@ -35,10 +26,16 @@ TAG-RSS-FEEDS  := $(patsubst %,$(WWW)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
 # pieces to a "tadpole" package?
 COMPILE-POST   := racket rkt/compile-post.rkt
 RENDER-POST    := racket rkt/render-post.rkt
+RENDER-COMPILE-NON-POST := racket rkt/compile-render-non-post.rkt
 MAKE-TAG-INDEX := racket rkt/make-tag-index.rkt
 MAKE-TAG-LIST  := racket rkt/make-tag-list.rkt
 MAKE-TAG-FEED  := racket rkt/make-tag-feed.rkt
+MAKE-SITEMAP   := racket rkt/make-sitemap.rkt
 PREVIEW        := racket rkt/preview.rkt
+
+.PHONY: rkt
+rkt:
+	(cd rkt; raco make *.rkt)
 
 ######################################################################
 
@@ -51,10 +48,10 @@ PREVIEW        := racket rkt/preview.rkt
 .PHONY: all clean preview
 
 all:
-	make posts-cache
-	make htmls-and-feeds
+	make cache
+	make www
 
-clean: clean-posts-cache clean-htmls-and-feeds
+clean: clean-cache clean-www
 
 preview: $(WWW)/index.html all
 	$(PREVIEW) $<
@@ -62,11 +59,11 @@ preview: $(WWW)/index.html all
 ######################################################################
 # Stage 1
 
-.PHONY: posts-cache clean-posts-cache
+.PHONY: cache clean-cache
 
-posts-cache: $(POST-CACHES)
+cache: $(POST-CACHES)
 
-clean-posts-cache:
+clean-cache:
 	-rm $(CACHE)/tags/*
 	-rmdir $(CACHE)/tags
 	-rm $(CACHE)/*
@@ -79,30 +76,33 @@ $(CACHE)/%.rktd: $(POSTS)/%.md
 ######################################################################
 # Stage 2
 
-.PHONY: hmtls-and-feeds clean-htmls-and-feeds
+.PHONY: hmtls-and-feeds clean-www
 
-htmls-and-feeds: htmls feeds
+www: htmls feeds static sitemap
 
-clean-htmls-and-feeds: clean-htmls clean-feeds
-
+clean-www: clean-htmls clean-feeds clean-sitemap
 
 # HTMLs
 
 .PHONY: hmtls clean-htmls
 
-htmls: $(POST-HTMLS) $(TAG-HTMLS) \
+htmls: $(POST-HTMLS) $(TAG-HTMLS) $(NON-POST-HTMLS) \
        $(WWW)/tags/index.html $(WWW)/index.html $(WWW)/main.css \
        rkt/render-page.rkt rkt/site.rkt
 
 clean-htmls:
 	-rm $(POST-HTMLS)
 	-rm $(TAG-HTMLS)
+	-rm $(NON-POST-HTMLS)
 	-rm $(WWW)/index.html
 	-rm $(WWW)/tags/index.html
 	-rmdir $(WWW)/tags
 
 $(WWW)/%.html: $(CACHE)/%.rktd rkt/render-page.rkt
 	$(RENDER-POST) $< $@
+
+$(WWW)/%.html: $(SRC)/non-posts/%.md rkt/compile-render-non-post.rkt
+	$(RENDER-COMPILE-NON-POST) $< $@
 
 $(WWW)/tags/%.html: $(CACHE)/tags/% rkt/render-page.rkt
 	$(MAKE-TAG-INDEX) $< $@
@@ -132,17 +132,46 @@ $(WWW)/feeds/%.atom.xml: $(CACHE)/tags/%
 $(WWW)/feeds/%.rss.xml: $(CACHE)/tags/%
 	$(MAKE-TAG-FEED) $< rss $@
 
+# Static assets
+
+.PHONY: static
+
+static:
+	cp -r $(SRC)/static/* $(WWW)/
+
+# Sitemap
+
+.PHONY: sitemap clean-sitemap
+
+sitemap:
+	$(MAKE-SITEMAP) $(WWW)/sitemap.txt
+
+clean-sitemap:
+	rm $(WWW)/sitemap.txt
+
 ######################################################################
-# Deploy
+# GitHub pages deploy
+
+REPO := /home/greg/src/greghendershott.github.com/
+
+github-deploy:
+	@(echo 'Press enter to rm -r and copy files $$(date +%Y%m%d%H%M%S)'; read dummy)
+	rm -r $(REPO)
+	cp -r $(WWW)/* $(REPO)
+	cd $(REPO) && git commit -am "Update $$(date +%Y%m%d%H%M%S)"
+# && git push
+
+######################################################################
+# S3bucket deploy
 
 AWS    := aws --profile greg
 BUCKET := www.greghendershott.com
 
-.PHONY: deploy full-deploy
+.PHONY: s3-deploy s3-full-deploy
 
-deploy:
+s3-deploy:
 	$(AWS) s3 sync --no-follow-symlinks $(WWW) s3://$(BUCKET)
 
-full-deploy:
+s3-full-deploy:
 	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) s3://$(BUCKET)
-	racket rkt/old-post-redirs.rkt $(BUCKET)
+	racket rkt/old-post-redirs.rkt s3 $(BUCKET)
