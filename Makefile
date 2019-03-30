@@ -164,7 +164,8 @@ old-post-redirs:
 
 REPO := /home/greg/src/greghendershott.github.com/
 
-github-deploy:
+### TODO: Use rsync --delete instead of rm and cp here ???!!!!
+github-deploy: old-post-redirs
 	@(echo 'Press enter to rm -r and copy files $$(date +%Y%m%d%H%M%S)'; read dummy)
 	rm -r $(REPO)
 	cp -r $(WWW)/* $(REPO)
