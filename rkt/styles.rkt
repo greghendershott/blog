@@ -26,6 +26,7 @@
             font-size: 18px;
             background-color: #fff;
             color: @|text|}
+
       main, header.site, footer.site {padding: 4px 8px}
       header.site, footer.site {text-align: center;
                                 margin: 0;
@@ -35,9 +36,8 @@
       footer.site {box-shadow: 0px -2px 5px #aaa;
                    font-size: smaller;
                    margin-top: 32px}
-      header.site svg {height: 16px;
-                       width: 16px}
-      .logo {opacity: 0.8}
+      header.site nav ul li a img {height: 16px;
+                                   width: 16px}
 
       main {margin: 0px auto;
             max-width: 768px}
