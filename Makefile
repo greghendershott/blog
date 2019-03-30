@@ -53,8 +53,12 @@ all:
 
 clean: clean-cache clean-www
 
-preview: $(WWW)/index.html all
+serve: $(WWW)/index.html all
 	$(PREVIEW) $<
+
+preview: $(WWW)/index.html all
+	$(PREVIEW) $< "browser"
+
 
 ######################################################################
 # Stage 1
