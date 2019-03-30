@@ -159,7 +159,7 @@ clean-sitemap:
 REPO := /home/greg/src/greghendershott.github.com/
 
 ### TODO: Use rsync --delete instead of rm and cp here ???!!!!
-github-deploy: old-post-redirs
+github-deploy:
 	@(echo 'Press enter to rm -r and copy files $$(date +%Y%m%d%H%M%S)'; read dummy)
 	rm -r $(REPO)
 	cp -r $(WWW)/* $(REPO)
@@ -167,7 +167,7 @@ github-deploy: old-post-redirs
 # && git push
 
 ######################################################################
-# S3bucket deploy
+# S3 bucket deploy
 
 AWS    := aws --profile greg
 BUCKET := www.greghendershott.com
