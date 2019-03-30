@@ -8,9 +8,9 @@ WWW       := www
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
 # like post .md files, and from those build lists of targets.
-POST-SOURCES := $(wildcard $(POSTS)/*.md)
-POST-CACHES  := $(patsubst %.md,$(CACHE)/%.rktd,$(notdir $(POST-SOURCES)))
-POST-HTMLS   := $(patsubst %.rktd,$(WWW)/%.html,$(notdir $(POST-CACHES)))
+POST-SOURCES := $(shell find $(POSTS) -type f)
+POST-CACHES  := $(patsubst $(POSTS)/%.md,$(CACHE)/%.rktd,$(POST-SOURCES))
+POST-HTMLS   := $(patsubst $(CACHE)/%.rktd,$(WWW)/%.html,$(POST-CACHES))
 
 TAG-CACHES     := $(wildcard $(CACHE)/tags/*)
 TAG-HTMLS      := $(patsubst %,$(WWW)/tags/%.html,$(notdir $(TAG-CACHES)))
@@ -59,6 +59,9 @@ serve: $(WWW)/index.html all
 preview: $(WWW)/index.html all
 	$(PREVIEW) $< "browser"
 
+# Help create src/posts/YYYY/MM/TITLE.md template
+new:
+	@echo 'not yet implemented'
 
 ######################################################################
 # Stage 1
@@ -68,13 +71,10 @@ preview: $(WWW)/index.html all
 cache: $(POST-CACHES)
 
 clean-cache:
-	-rm $(CACHE)/tags/*
-	-rmdir $(CACHE)/tags
-	-rm $(CACHE)/*
-	-rmdir $(CACHE)
+	-rm -rf $(CACHE)
 
 $(CACHE)/%.rktd: $(POSTS)/%.md
-	$(COMPILE-POST) $< $@
+	$(COMPILE-POST) $< $(abspath $(CACHE)/tags) $@
 
 
 ######################################################################
@@ -153,12 +153,6 @@ sitemap:
 clean-sitemap:
 	rm $(WWW)/sitemap.txt
 
-# Old post redirs
-# Only needed for GitHub deploy not S3 bucket
-
-old-post-redirs:
-	racket rkt/old-post-redirs.rkt 'meta' $(WWW)
-
 ######################################################################
 # GitHub pages deploy
 
@@ -185,4 +179,3 @@ s3-deploy:
 
 s3-full-deploy:
 	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) s3://$(BUCKET)
-	racket rkt/old-post-redirs.rkt 's3' $(BUCKET)

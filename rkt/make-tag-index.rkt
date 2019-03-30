@@ -22,7 +22,7 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (index-xexpr tag the-posts output-html))
+                    (index-xexpr tag the-posts (sans-top-dir output-html)))
                    out)))]))
 
 (define/contract (index-xexpr tag the-posts page-path)
@@ -30,9 +30,8 @@
   (define articles
     (for/list ([the-post (in-list the-posts)])
       (match-define (cons rktd (post title datetime tags blurb more? body)) the-post)
-      (define href (~a "/" (path->string
-                            (file-name-from-path
-                             (path-replace-extension rktd #".html")))))
+      (define href (~a "/" (sans-top-dir
+                            (path-replace-extension rktd #".html"))))
       `(article ([class "index"])
         (header ()
          (h2 () (a ([href ,href]) ,title))

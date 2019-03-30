@@ -20,7 +20,7 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (post-xexpr the-post output-html))
+                    (post-xexpr the-post (sans-top-dir output-html)))
                    out)))]))
 
 (define (post-xexpr the-post page-path)

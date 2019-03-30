@@ -23,7 +23,7 @@
 
 (define (urn uri-path)
   ;; Note that URNs have a more restricted syntax than URIs.
-  (~a (host/urn) ":" (uri-encode uri-path)))
+  (~a (host/urn) ":" (regexp-replace* #px"/" uri-path "-")))
 
 (define (author)
   "Greg Hendershott")

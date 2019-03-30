@@ -21,7 +21,8 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (non-post-xexpr (build-path non-post-source) output-html))
+                    (non-post-xexpr (build-path non-post-source)
+                                    (sans-top-dir output-html)))
                    out)))]))
 
 (define (non-post-xexpr source-path page-path)

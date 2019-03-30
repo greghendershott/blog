@@ -56,15 +56,14 @@
 
 (define (post->atom-feed-entry-xexpr tag x)
   (match-define (cons rktd (post title datetime tags blurb more? body)) x)
-  (define href (~a "/" (path->string
-                        (file-name-from-path
-                         (path-replace-extension rktd #".html")))))
+  (define href (~a "/" (sans-top-dir
+                        (path-replace-extension rktd #".html"))))
   `(entry
     ()
     (title ([type "text"]) ,title)
     (link ([rel "alternate"]
            [href ,href]))
-    (id ,(urn (path->string (path-replace-extension (file-name-from-path rktd) #".html"))))
+    (id ,(urn href))
     (published ,(rfc-8601/universal datetime))
     (updated ,(rfc-8601/universal datetime))
     (author (name ,(author)))
@@ -101,14 +100,12 @@
 
 (define (post->rss-feed-entry-xexpr tag x)
   (match-define (cons rktd (post title datetime tags blurb more? body)) x)
-  (define href (full-uri (path->string
-                          (file-name-from-path
-                           (path-replace-extension rktd #".html")))))
+  (define href (~a "/" (sans-top-dir
+                        (path-replace-extension rktd #".html"))))
   `(item
     (title ,title)
     (link ,href)
-    (guid ([isPermaLink "false"])
-     ,(urn (path->string (path-replace-extension (file-name-from-path rktd) #".html"))))
+    (guid ([isPermaLink "false"]) ,(urn href))
     (pubDate ,(rfc-8601->rfc-822 datetime))
     ;; Not author: <https://validator.w3.org/feed/docs/error/InvalidContact.html>
     (dc:creator ,(author))

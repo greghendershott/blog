@@ -68,6 +68,18 @@
       div.footnotes {font-size: 90%;
                      border-top: 1px dotted}
 
+      kbd {padding: 0.1em 0.6em;
+           border: 1px solid #CCC;
+           font-size: 80%;
+           background-color: #F7F7F7;
+           color: #333;
+           box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 2px #FFF inset;
+           border-radius: 3px;
+           display: inline-block;
+           margin: 0px 0.1em;
+           line-height: 1.4;
+           white-space: nowrap}
+
       code {font-family: monospace;
             font-size: 90%;
             background-color: #f0f0fa;

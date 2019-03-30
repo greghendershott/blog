@@ -28,7 +28,7 @@
 
 (define (main)
   (match (current-command-line-arguments)
-    [(vector source rktd)
+    [(vector source tags-dir rktd)
      (define the-post (read-post (build-path source)))
 
      (make-parent-directory* rktd)
@@ -36,9 +36,9 @@
       #:exists 'replace rktd
       (λ (out) (write the-post out)))
 
-     (make-directory* (build-path (path-only rktd) "tags"))
+     (make-directory* tags-dir)
      (for ([tag (in-list (cons "all" (post-tags the-post)))])
-       (define tag-file (build-path (path-only rktd) "tags" (slug tag)))
+       (define tag-file (build-path tags-dir (slug tag)))
        (call-with-output-file*/delete
         #:exists 'append tag-file
         (λ (out) (displayln rktd out))))]))

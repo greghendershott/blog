@@ -52,9 +52,9 @@
         (li (a ([href "/"]) "Greg Hendershott"))
         (li (a ([href "/tags/index.html"]) "Tags"))
         (li (a ([href "/About.html"]) "About"))
-        (li (a ([href ,(full-uri atom-path)])
+        (li (a ([href ,(~a "/" atom-path)])
              (img ([src "/img/feed.svg"])) nbsp "Atom"))
-        (li (a ([href ,(full-uri rss-path)])
+        (li (a ([href ,(~a "/" rss-path)])
              (img ([src "/img/feed.svg"])) nbsp "RSS")))))
 
      (main ([class "site"]) ,@contents)
