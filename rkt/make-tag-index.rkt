@@ -52,6 +52,6 @@
               #:keywords    tag
               #:description page-title
               #:page-path   page-path
-              #:atom-path   (~a "feeds/" tag "atom.xml")
-              #:rss-path    (~a "feeds/" tag "rss.xml")
+              #:atom-path   (~a "feeds/" tag ".atom.xml")
+              #:rss-path    (~a "feeds/" tag ".rss.xml")
               #:contents    contents))
