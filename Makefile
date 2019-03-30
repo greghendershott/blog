@@ -1,37 +1,37 @@
 # Configure where are sources, build cache, and root of the web site
 # output.
-SRC       := src
-POSTS     := $(SRC)/posts
-CACHE     := .cache
-WWW       := www
+src   := src
+cache := .cache
+www   := www
 
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
-# like post .md files, and from those build lists of targets.
-POST-SOURCES := $(shell find $(POSTS) -type f)
-POST-CACHES  := $(patsubst $(POSTS)/%.md,$(CACHE)/%.rktd,$(POST-SOURCES))
-POST-HTMLS   := $(patsubst $(CACHE)/%.rktd,$(WWW)/%.html,$(POST-CACHES))
+# and from those build lists of targets.
+post-sources := $(shell find $(src)/posts -type f)
+post-caches  := $(patsubst $(src)/posts/%.md,$(cache)/%.rktd,$(post-sources))
+post-htmls   := $(patsubst $(cache)/%.rktd,$(www)/%.html,$(post-caches))
 
-TAG-CACHES     := $(wildcard $(CACHE)/tags/*)
-TAG-HTMLS      := $(patsubst %,$(WWW)/tags/%.html,$(notdir $(TAG-CACHES)))
-TAG-ATOM-FEEDS := $(patsubst %,$(WWW)/feeds/%.atom.xml,$(notdir $(TAG-CACHES)))
-TAG-RSS-FEEDS  := $(patsubst %,$(WWW)/feeds/%.rss.xml,$(notdir $(TAG-CACHES)))
+tag-caches     := $(wildcard $(cache)/tags/*)
+tag-htmls      := $(patsubst %,$(www)/tags/%.html,$(notdir $(tag-caches)))
+tag-atom-feeds := $(patsubst %,$(www)/feeds/%.atom.xml,$(notdir $(tag-caches)))
+tag-rss-feeds  := $(patsubst %,$(www)/feeds/%.rss.xml,$(notdir $(tag-caches)))
 
-NON-POST-SOURCES := $(wildcard $(SRC)/non-posts/*.md)
-NON-POST-HTMLS   := $(patsubst %.md,$(WWW)/%.html,$(notdir $(NON-POST-SOURCES)))
+non-post-sources := $(wildcard $(src)/non-posts/*.md)
+non-post-htmls   := $(patsubst %.md,$(www)/%.html,$(notdir $(non-post-sources)))
 
 # Racket commands
 #
 # Note: For now these are in rkt subdir. Someday move the generic
 # pieces to a "tadpole" package?
-COMPILE-POST   := racket rkt/compile-post.rkt
-RENDER-POST    := racket rkt/render-post.rkt
-RENDER-COMPILE-NON-POST := racket rkt/compile-render-non-post.rkt
-MAKE-TAG-INDEX := racket rkt/make-tag-index.rkt
-MAKE-TAG-LIST  := racket rkt/make-tag-list.rkt
-MAKE-TAG-FEED  := racket rkt/make-tag-feed.rkt
-MAKE-SITEMAP   := racket rkt/make-sitemap.rkt
-PREVIEW        := racket rkt/preview.rkt
+compile-post   := racket rkt/compile-post.rkt
+render-post    := racket rkt/render-post.rkt
+render-non-post := racket rkt/compile-render-non-post.rkt
+make-tag-index := racket rkt/make-tag-index.rkt
+make-tag-list  := racket rkt/make-tag-list.rkt
+make-tag-feed  := racket rkt/make-tag-feed.rkt
+make-sitemap   := racket rkt/make-sitemap.rkt
+make-css       := racket rkt/styles.rkt
+preview        := racket rkt/preview.rkt
 
 .PHONY: rkt
 rkt:
@@ -41,7 +41,7 @@ rkt:
 
 # Given my current level of Makefile fu, I can only see how to make
 # this work with two distinct passes. The main issue seems to be that
-# compile-post.rkt needs to produce $(TAG-CACHES), which in turn are
+# compile-post.rkt needs to produce $(tag-caches), which in turn are
 # sources for index and feed files. My attempts to do it as one single
 # chain never worked.
 
@@ -53,13 +53,13 @@ all:
 
 clean: clean-cache clean-www
 
-serve: $(WWW)/index.html all
-	$(PREVIEW) $<
+serve: $(www)/index.html all
+	$(preview) $<
 
-preview: $(WWW)/index.html all
-	$(PREVIEW) $< "browser"
+preview: $(www)/index.html all
+	$(preview) $< "browser"
 
-# Help create src/posts/YYYY/MM/TITLE.md template
+# Help create $(src)/posts/YYYY/MM/TITLE.md template
 new:
 	@echo 'not yet implemented'
 
@@ -68,14 +68,13 @@ new:
 
 .PHONY: cache clean-cache
 
-cache: $(POST-CACHES)
+cache: $(post-caches)
 
 clean-cache:
-	-rm -rf $(CACHE)
+	-rm -rf $(cache)
 
-$(CACHE)/%.rktd: $(POSTS)/%.md
-	$(COMPILE-POST) $< $(abspath $(CACHE)/tags) $@
-
+$(cache)/%.rktd: $(src)/posts/%.md
+	$(compile-post) $< $(abspath $(cache)/tags) $@
 
 ######################################################################
 # Stage 2
@@ -90,71 +89,75 @@ clean-www: clean-htmls clean-feeds clean-sitemap
 
 .PHONY: hmtls clean-htmls
 
-htmls: $(POST-HTMLS) $(TAG-HTMLS) $(NON-POST-HTMLS) \
-       $(WWW)/tags/index.html $(WWW)/index.html $(WWW)/main.css \
+htmls: $(post-htmls) $(tag-htmls) $(non-post-htmls) \
+       $(www)/tags/index.html $(www)/index.html $(www)/main.css \
        rkt/render-page.rkt rkt/site.rkt
 
 clean-htmls:
-	-rm $(POST-HTMLS)
-	-rm $(TAG-HTMLS)
-	-rm $(NON-POST-HTMLS)
-	-rm $(WWW)/index.html
-	-rm $(WWW)/tags/index.html
-	-rmdir $(WWW)/tags
+	-rm $(post-htmls)
+	-rm $(tag-htmls)
+	-rm $(non-post-htmls)
+	-rm $(www)/index.html
+	-rm $(www)/tags/index.html
+	-rmdir $(www)/tags
+	-rm $(www)/main.css
 
-$(WWW)/%.html: $(CACHE)/%.rktd rkt/render-page.rkt
-	$(RENDER-POST) $< $@
+$(www)/%.html: $(cache)/%.rktd rkt/render-page.rkt
+	$(render-post) $< $@
 
-$(WWW)/%.html: $(SRC)/non-posts/%.md rkt/compile-render-non-post.rkt
-	$(RENDER-COMPILE-NON-POST) $< $@
+$(www)/%.html: $(src)/non-posts/%.md rkt/compile-render-non-post.rkt
+	$(render-non-post) $< $@
 
-$(WWW)/tags/%.html: $(CACHE)/tags/% rkt/render-page.rkt
-	$(MAKE-TAG-INDEX) $< $@
+$(www)/tags/%.html: $(cache)/tags/% rkt/render-page.rkt
+	$(make-tag-index) $< $@
 
-$(WWW)/tags/index.html: $(TAG-CACHES) rkt/render-page.rkt rkt/make-tag-list.rkt
-	$(MAKE-TAG-LIST) $(CACHE)/tags/ $@
+$(www)/tags/index.html: $(tag-caches) rkt/render-page.rkt rkt/make-tag-list.rkt
+	$(make-tag-list) $(cache)/tags/ $@
 
-$(WWW)/index.html: $(WWW)/tags/all.html rkt/render-page.rkt rkt/make-tag-feed.rkt
+$(www)/index.html: $(www)/tags/all.html rkt/render-page.rkt rkt/make-tag-feed.rkt
 	cp $< $@
 
-$(WWW)/main.css: rkt/styles.rkt
-	racket rkt/styles.rkt $@
+$(www)/main.css: rkt/styles.rkt
+	$(make-css) $@
 
 # Feeds
 
 .PHONY: feeds clean-feeds
 
-feeds: $(TAG-ATOM-FEEDS) $(TAG-RSS-FEEDS)
+feeds: $(tag-atom-feeds) $(tag-rss-feeds)
 
 clean-feeds:
-	-rm $(WWW)/feeds/*.xml
-	-rmdir $(WWW)/feeds
+	-rm $(www)/feeds/*.xml
+	-rmdir $(www)/feeds
 
-$(WWW)/feeds/%.atom.xml: $(CACHE)/tags/%
-	$(MAKE-TAG-FEED) $< atom $@
+$(www)/feeds/%.atom.xml: $(cache)/tags/%
+	$(make-tag-feed) $< atom $@
 
-$(WWW)/feeds/%.rss.xml: $(CACHE)/tags/%
-	$(MAKE-TAG-FEED) $< rss $@
+$(www)/feeds/%.rss.xml: $(cache)/tags/%
+	$(make-tag-feed) $< rss $@
 
 # Static assets
 
 .PHONY: static
 
 static:
-	cp -r $(SRC)/static/* $(WWW)/
+	cp -r $(src)/static/* $(www)/
 
 # Sitemap
 
 .PHONY: sitemap clean-sitemap
 
 sitemap:
-	$(MAKE-SITEMAP) $(WWW)/sitemap.txt
+	$(make-sitemap) $(www)/sitemap.txt
 
 clean-sitemap:
-	rm $(WWW)/sitemap.txt
+	rm $(www)/sitemap.txt
+
 
 ######################################################################
 # GitHub pages deploy
+
+## Should I simply set $(www) to point here???
 
 REPO := /home/greg/src/greghendershott.github.com/
 
@@ -162,7 +165,7 @@ REPO := /home/greg/src/greghendershott.github.com/
 github-deploy:
 	@(echo 'Press enter to rm -r and copy files $$(date +%Y%m%d%H%M%S)'; read dummy)
 	rm -r $(REPO)
-	cp -r $(WWW)/* $(REPO)
+	cp -r $(www)/* $(REPO)
 	cd $(REPO) && git commit -am "Update $$(date +%Y%m%d%H%M%S)"
 # && git push
 
@@ -175,7 +178,7 @@ BUCKET := www.greghendershott.com
 .PHONY: s3-deploy s3-full-deploy
 
 s3-deploy:
-	$(AWS) s3 sync --no-follow-symlinks $(WWW) s3://$(BUCKET)
+	$(AWS) s3 sync --no-follow-symlinks $(www) s3://$(BUCKET)
 
 s3-full-deploy:
-	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) s3://$(BUCKET)
+	$(AWS) s3 sync --delete --no-follow-symlinks $(www) s3://$(BUCKET)
