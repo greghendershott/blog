@@ -56,14 +56,14 @@
 
 (define (post->atom-feed-entry-xexpr tag x)
   (match-define (cons rktd (post title datetime tags blurb more? body)) x)
-  (define href (~a "/" (sans-top-dir
-                        (path-replace-extension rktd #".html"))))
+  (define uri-path (sans-top-dir
+                    (path-replace-extension rktd #".html")))
   `(entry
-    ()
     (title ([type "text"]) ,title)
     (link ([rel "alternate"]
-           [href ,href]))
-    (id ,(urn href))
+           [href ,(full-uri (~a "/" uri-path))]))
+    ;; The leading "-" is for backward compat with ID gen by Frog
+    (id ,(urn (~a "-" uri-path)))
     (published ,(rfc-8601/universal datetime))
     (updated ,(rfc-8601/universal datetime))
     (author (name ,(author)))
@@ -100,12 +100,13 @@
 
 (define (post->rss-feed-entry-xexpr tag x)
   (match-define (cons rktd (post title datetime tags blurb more? body)) x)
-  (define href (~a "/" (sans-top-dir
-                        (path-replace-extension rktd #".html"))))
+  (define uri-path (sans-top-dir
+                    (path-replace-extension rktd #".html")))
   `(item
     (title ,title)
-    (link ,href)
-    (guid ([isPermaLink "false"]) ,(urn href))
+    (link ,(full-uri (~a "/" uri-path)))
+    ;; The leading "-" is for backward compat with ID gen by Frog
+    (guid ([isPermaLink "false"]) ,(urn (~a "-" uri-path)))
     (pubDate ,(rfc-8601->rfc-822 datetime))
     ;; Not author: <https://validator.w3.org/feed/docs/error/InvalidContact.html>
     (dc:creator ,(author))
