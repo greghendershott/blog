@@ -36,8 +36,8 @@
       footer.site {box-shadow: 0px -2px 5px #aaa;
                    font-size: smaller;
                    margin-top: 32px}
-      header.site nav ul li a img {height: 16px;
-                                   width: 16px}
+      header.site nav ul li a img {height: 12px;
+                                   width: 12px}
 
       main {margin: 0px auto;
             max-width: 768px}
