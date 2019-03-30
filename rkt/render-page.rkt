@@ -13,15 +13,17 @@
                              #:page-path   page-path
                              #:atom-path   atom-path
                              #:rss-path    rss-path
-                             #:contents    contents)
-  (-> #:title       string?
-      #:description string?
-      #:keywords    string?
-      #:page-path   string?
-      #:atom-path   string?
-      #:rss-path    string?
-      #:contents    (listof xexpr/c)
-      xexpr/c)
+                             #:contents    contents
+                             #:heads       [heads '()])
+  (->* (#:title       string?
+        #:description string?
+        #:keywords    string?
+        #:page-path   string?
+        #:atom-path   string?
+        #:rss-path    string?
+        #:contents    (listof xexpr/c))
+       (#:heads (listof xexpr/c))
+       xexpr/c)
   `(html ([lang "en"])
     (head ()
      (meta ([charset "utf-8"]))
@@ -40,25 +42,26 @@
      (link ([rel "alternate"]
             [type "application/rss+xml"]
             [title "RSS Feed"]
-            [href ,(full-uri rss-path)])))
+            [href ,(full-uri rss-path)]))
+     ,@heads)
+
     (body ()
-     ,(header)
+     (header ([class "site"])
+      (nav
+       (ul
+        (li (a ([href "/"]) "Greg Hendershott"))
+        (li (a ([href "/tags/index.html"]) "Tags"))
+        (li (a ([href "/About.html"]) "About"))
+        (li (a ([href ,(full-uri atom-path)])
+             (img ([src "/img/feed.svg"])) nbsp "Atom"))
+        (li (a ([href ,(full-uri rss-path)])
+             (img ([src "/img/feed.svg"])) nbsp "RSS")))))
+
      (main ([class "site"]) ,@contents)
-     ,(footer))))
 
-(define (header)
-  `(header ([class "site"])
-    (nav
-     (ul
-      (li (a ([href "/"]) "Greg Hendershott"))
-      (li (a ([href "/tags/index.html"]) "Tags"))
-      (li (a ([href "/feeds/all.atom.xml"]) "Atom"))
-      (li (a ([href "/feeds/all.rss.xml"]) "RSS"))))))
-
-(define (footer)
-  `(footer ([class "site"])
-    (p ()
-     "Created using a Makefile, Racket, and 'tadpole'.")
-    (p ()
-     "Copyright " copy " 2012" ndash ,(~a (date-year (current-date)))
-     " by Greg" nbsp "Hendershott. All rights reserved.")))
+     (footer ([class "site"])
+      (p ()
+       "Created using a Makefile, Racket, and 'tadpole'.")
+      (p ()
+       "Copyright " copy " 2012" ndash ,(~a (date-year (current-date)))
+       " by Greg Hendershott. All rights reserved.")))))

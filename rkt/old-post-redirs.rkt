@@ -3,6 +3,8 @@
 (require racket/require
          (multi-in racket (file format match))
          (multi-in aws (keys s3))
+         "render-page.rkt"
+         "site.rkt"
          "util.rkt"
          "xexpr.rkt")
 
@@ -11,28 +13,37 @@
 (define (main)
   (match (current-command-line-arguments)
     [(vector "s3" bucket) (put-redirs bucket)]
-    [(vector "refresh" www) (make-redir-htmls www)]))
+    [(vector "meta" www) (make-redir-htmls www)]))
 
 (define (make-redir-htmls www)
   (for ([p (in-list old-posts)])
     (define-values (old new) (old+new p))
+    (define /new (~a "/" new))
     (define path (build-path www old))
     (make-parent-directory* path)
     (call-with-output-file*/delete
      path #:exists 'replace
      (λ (out)
        (displayln "<!DOCTYPE html>" out)
-        (displayln (xexpr->string
-                    `(html
-                      (head
-                       (meta
-                        [http-equv "refresh"]
-                        [content ,(~a "3; url=") new]))
-                      (body
-                       (p "This page has moved to "
-                        (a ([href ,new]) new)
-                        ". Will redirect in a few seconds..."))))
-                   out)))))
+       (displayln (xexpr->string (moved-xexpr (path->string path) /new))
+                  out)))))
+
+(define (moved-xexpr page-path new-uri)
+  (define heads
+    `((meta ([http-equiv "refresh"]
+             [content    ,(~a "3; url=" new-uri)]))))
+  (define contents
+    `((h1 "I did some spring cleaning")
+      (p "This page has moved to " (a ([href ,new-uri]) ,new-uri) ".")
+      (p "You can click that link, or, wait a few seconds and it will redirect automatically.")))
+  (page-xexpr #:title       "Page moved"
+              #:description ""
+              #:keywords    ""
+              #:page-path   page-path
+              #:atom-path   "feeds/all.atom.xml"
+              #:rss-path    "feeds/all.rss.xml"
+              #:heads       heads
+              #:contents    contents))
 
 (define (put-redirs bucket)
   (parameterize ([aws-cli-profile "greg"])
@@ -41,17 +52,19 @@
   ;; x-amz-website-redirect-location
   (for ([p (in-list old-posts)])
     (define-values (old new) (old+new p))
-    (put/bytes (~a bucket old)
+    (define /old (~a "/" old))
+    (define /new (~a "/" new))
+    (put/bytes (~a bucket /old)
                #""
                ""
-               (hasheq 'x-amz-website-redirect-location new))))
+               (hasheq 'x-amz-website-redirect-location /new))))
 
 (define (old+new post)
   (match post
     [(pregexp "^(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)-(.+)$"
               (list _ year month day name))
-     (values (~a "/" year "/" month "/" name ".html")
-             (~a "/" year "-" month "-" day "-" name ".html"))]))
+     (values (~a year "/" month "/" name ".html")
+             (~a year "-" month "-" day "-" name ".html"))]))
 
 (define old-posts
   (list "2011-12-27-domain-registrar-switch"
@@ -125,5 +138,4 @@
         "2018-05-03-extramaze-llc-using-racket-postgresql-aws-but-no-ads-or-js"
         "2018-05-13-extramaze-llc-using-system-fonts-not-google-fonts"
         "2018-10-03-racket-mode"
-        "2018-11-01-thread-names"
-        ))
+        "2018-11-01-thread-names"))

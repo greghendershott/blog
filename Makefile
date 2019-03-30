@@ -153,6 +153,12 @@ sitemap:
 clean-sitemap:
 	rm $(WWW)/sitemap.txt
 
+# Old post redirs
+# Only needed for GitHub deploy not S3 bucket
+
+old-post-redirs:
+	racket rkt/old-post-redirs.rkt 'meta' $(WWW)
+
 ######################################################################
 # GitHub pages deploy
 
@@ -178,4 +184,4 @@ s3-deploy:
 
 s3-full-deploy:
 	$(AWS) s3 sync --delete --no-follow-symlinks $(WWW) s3://$(BUCKET)
-	racket rkt/old-post-redirs.rkt s3 $(BUCKET)
+	racket rkt/old-post-redirs.rkt 's3' $(BUCKET)
