@@ -62,8 +62,12 @@
           font-size: 1.5em}
       h2 {font-size: 1.3em}
 
-      article.index {padding-bottom: 18px;
-                     border-bottom: 2px dashed #ccc}
+      article.index.newer {margin-bottom: 36px;
+                           padding-bottom: 18px;
+                           border-bottom: 1px dashed #ccc}
+      article.index.older {padding-bottom: 18px;
+                           border-bottom: 1px dotted #ccc}
+      p.date-and-tags {line-height: 1.0}
 
       div.footnotes {font-size: 90%;
                      border-top: 1px dotted}

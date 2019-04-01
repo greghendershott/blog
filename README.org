@@ -1,0 +1,17 @@
+-*- mode:org ; mode:visual-line -*-
+
+* DONE Max posts per feed
+
+* DONE No blurbs after N posts
+Now it is just one big index HTML for each tag.
+That's a little heavy tags with many posts -- especially ~all~.
+How about abbreviate listing after N posts?
+e.g. Just Title, Date. Maybe tags. Definitely not the blurb.
+That's /most/ of the benefit of split index-N.html pages, without the hassle.
+
+* TODO Add a ~make new~ target that creates the template file for a new post.
+Would be even handier than with Frog, now that the sources must be nested in YYYY/MM dirs.
+
+* TODO Maybe stop depending on frog/{enhance-body paths}
+Split out from frog to new pkgs?
+Also, the pygmentize stuff for frog spanws a long-running python process, which makes frog faster, but won't help us (in fact it may hurt a little).

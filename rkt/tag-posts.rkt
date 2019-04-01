@@ -7,13 +7,10 @@
 (provide tag-file->sorted-posts)
 
 (define (tag-file->sorted-posts tag-file)
-  (define the-posts (for/list ([rktd (in-list (file->lines tag-file))])
-                      (cons rktd (call-with-input-file* rktd read))))
-  ;; Sucessive makes might append again, so remove dupes. (Using
-  ;; `remove-duplicates` on a sorted list is kind of stupid; it could
-  ;; be faster just scanning for "runs" of dupes. But whatever, my use
-  ;; case is dozens or hundreds of items, max.)
-  (remove-duplicates
-   (sort the-posts
-         #:key (compose post-datetime cdr)
-         string>?)))
+  (define rktds (remove-duplicates ;sucessive makes might append again
+                 (file->lines tag-file)))
+  (define rktds+posts (for/list ([rktd (in-list rktds)])
+                        (cons rktd (call-with-input-file* rktd read))))
+  (sort rktds+posts
+        #:key (compose post-datetime cdr)
+        string>?))

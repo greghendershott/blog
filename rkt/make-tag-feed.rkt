@@ -11,15 +11,19 @@
 
 (module+ main (main))
 
+(define max-posts-per-feed 10)
+
 (define (main)
   (match (current-command-line-arguments)
     [(vector tag-file (and which (or "atom" "rss")) _www output-xml)
      (define tag (path->string (file-name-from-path tag-file)))
-     (define the-posts (tag-file->sorted-posts tag-file))
+     (define-values (newer-posts _older-posts)
+       (split-at* (tag-file->sorted-posts tag-file)
+                  max-posts-per-feed))
      (make-directory* (path-only output-xml))
      (call-with-output-file*/delete
       #:exists 'replace output-xml
-      (curry write-feed which tag the-posts))]))
+      (curry write-feed which tag newer-posts))]))
 
 (define (write-feed which tag the-posts out)
   (match which

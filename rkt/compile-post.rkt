@@ -5,7 +5,11 @@
          (only-in markdown parse-markdown)
          threading
          (only-in srfi/1 break)
-         (multi-in frog (enhance-body paths))
+         (only-in frog/enhance-body
+                  add-racket-doc-links
+                  auto-embed-tweets
+                  syntax-highlight)
+         (only-in frog/paths slug)
          "post.rkt"
          "util.rkt"
          "xexpr.rkt")
