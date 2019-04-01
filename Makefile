@@ -140,8 +140,9 @@ $(www)/feeds/%.rss.xml: $(cache)/tags/%
 
 .PHONY: static
 
+# Note the $(src)/static/. to copy dotfiles, too!
 static:
-	cp -r $(src)/static/* $(www)/
+	cp -pr $(src)/static/. $(www)/
 
 # Sitemap
 
