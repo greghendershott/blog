@@ -2,7 +2,7 @@
 # output.
 src   := src
 cache := .cache
-www   := www
+www   := /home/greg/src/greghendershott.github.com
 
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
@@ -103,16 +103,16 @@ clean-htmls:
 	-rm $(www)/main.css
 
 $(www)/%.html: $(cache)/%.rktd rkt/render-page.rkt
-	$(render-post) $< $@
+	$(render-post) $< $(www) $@
 
 $(www)/%.html: $(src)/non-posts/%.md rkt/compile-render-non-post.rkt
-	$(render-non-post) $< $@
+	$(render-non-post) $< $(www) $@
 
 $(www)/tags/%.html: $(cache)/tags/% rkt/render-page.rkt
-	$(make-tag-index) $< $@
+	$(make-tag-index) $< $(www) $@
 
 $(www)/tags/index.html: $(tag-caches) rkt/render-page.rkt rkt/make-tag-list.rkt
-	$(make-tag-list) $(cache)/tags/ $@
+	$(make-tag-list) $(cache)/tags/ $(www) $@
 
 $(www)/index.html: $(www)/tags/all.html rkt/render-page.rkt rkt/make-tag-feed.rkt
 	cp $< $@
@@ -131,10 +131,10 @@ clean-feeds:
 	-rmdir $(www)/feeds
 
 $(www)/feeds/%.atom.xml: $(cache)/tags/%
-	$(make-tag-feed) $< atom $@
+	$(make-tag-feed) $< atom $(www) $@
 
 $(www)/feeds/%.rss.xml: $(cache)/tags/%
-	$(make-tag-feed) $< rss $@
+	$(make-tag-feed) $< rss $(www) $@
 
 # Static assets
 
@@ -157,17 +157,8 @@ clean-sitemap:
 ######################################################################
 # GitHub pages deploy
 
-## Should I simply set $(www) to point here???
+# Just set $(www) to /home/greg/src/greghendershott.github.com
 
-REPO := /home/greg/src/greghendershott.github.com/
-
-### TODO: Use rsync --delete instead of rm and cp here ???!!!!
-github-deploy:
-	@(echo 'Press enter to rm -r and copy files $$(date +%Y%m%d%H%M%S)'; read dummy)
-	rm -r $(REPO)
-	cp -r $(www)/* $(REPO)
-	cd $(REPO) && git commit -am "Update $$(date +%Y%m%d%H%M%S)"
-# && git push
 
 ######################################################################
 # S3 bucket deploy

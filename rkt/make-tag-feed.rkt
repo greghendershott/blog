@@ -13,7 +13,7 @@
 
 (define (main)
   (match (current-command-line-arguments)
-    [(vector tag-file (and which (or "atom" "rss")) output-xml)
+    [(vector tag-file (and which (or "atom" "rss")) _www output-xml)
      (define tag (path->string (file-name-from-path tag-file)))
      (define the-posts (tag-file->sorted-posts tag-file))
      (make-directory* (path-only output-xml))

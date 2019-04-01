@@ -14,7 +14,7 @@
 
 (define (main)
   (match (current-command-line-arguments)
-    [(vector non-post-source output-html)
+    [(vector non-post-source www output-html)
      (make-parent-directory* output-html)
      (call-with-output-file*/delete
       #:exists 'replace output-html
@@ -22,7 +22,7 @@
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
                     (non-post-xexpr (build-path non-post-source)
-                                    (sans-top-dir output-html)))
+                                    (file->uri www output-html)))
                    out)))]))
 
 (define (non-post-xexpr source-path page-path)

@@ -12,7 +12,7 @@
 
 (define (main)
   (match (current-command-line-arguments)
-    [(vector rktd output-html)
+    [(vector rktd www output-html)
      (define the-post (call-with-input-file* rktd read))
      (make-parent-directory* output-html)
      (call-with-output-file*/delete
@@ -20,7 +20,7 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (post-xexpr the-post (sans-top-dir output-html)))
+                    (post-xexpr the-post (file->uri www output-html)))
                    out)))]))
 
 (define (post-xexpr the-post page-path)

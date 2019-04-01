@@ -13,7 +13,7 @@
 
 (define (main)
   (match (current-command-line-arguments)
-    [(vector tag-file output-html)
+    [(vector tag-file www output-html)
      (define tag (path->string (file-name-from-path tag-file)))
      (define the-posts (tag-file->sorted-posts tag-file))
      (make-directory* (path-only output-html))
@@ -22,7 +22,7 @@
       (λ (out)
         (displayln "<!DOCTYPE html>" out)
         (displayln (xexpr->string
-                    (index-xexpr tag the-posts (sans-top-dir output-html)))
+                    (index-xexpr tag the-posts (file->uri www output-html)))
                    out)))]))
 
 (define/contract (index-xexpr tag the-posts page-path)
