@@ -1,6 +1,7 @@
 #lang racket/base
 
-(require racket/format
+(require racket/contract
+         racket/format
          net/uri-codec)
 
 (provide scheme
@@ -10,7 +11,7 @@
          author)
 
 (define (scheme)
-  "http")
+  "https")
 
 (define (host)
   "www.greghendershott.com")
@@ -18,7 +19,8 @@
 (define (host/urn)
   "urn:www-greghendershott-com")
 
-(define (full-uri uri-path)
+(define/contract (full-uri uri-path)
+  (-> (and/c path-string? relative-path?) string?)
   (~a (scheme) "://" (host) "/" uri-path))
 
 (define (urn uri-path)

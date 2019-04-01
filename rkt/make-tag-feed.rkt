@@ -61,7 +61,7 @@
   `(entry
     (title ([type "text"]) ,title)
     (link ([rel "alternate"]
-           [href ,(full-uri (~a "/" uri-path))]))
+           [href ,(full-uri uri-path)]))
     ;; The leading "-" is for backward compat with ID gen by Frog
     (id ,(urn (~a "-" uri-path)))
     (published ,(rfc-8601/universal datetime))
@@ -104,7 +104,7 @@
                     (path-replace-extension rktd #".html")))
   `(item
     (title ,title)
-    (link ,(full-uri (~a "/" uri-path)))
+    (link ,(full-uri uri-path))
     ;; The leading "-" is for backward compat with ID gen by Frog
     (guid ([isPermaLink "false"]) ,(urn (~a "-" uri-path)))
     (pubDate ,(rfc-8601->rfc-822 datetime))
