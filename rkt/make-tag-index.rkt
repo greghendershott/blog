@@ -20,10 +20,10 @@
      (call-with-output-file*/delete
       #:exists 'replace output-html
       (λ (out)
-        (displayln "<!DOCTYPE html>" out)
-        (displayln (xexpr->string
-                    (index-xexpr tag the-posts (file->uri www output-html)))
-                   out)))]))
+        (display "<!DOCTYPE html>" out)
+        (display (xexpr->string
+                  (index-xexpr tag the-posts (file->uri www output-html)))
+                 out)))]))
 
 (define/contract (index-xexpr tag the-posts page-path)
   (-> string? (listof (cons/c path-string? post?)) path-string? xexpr/c)

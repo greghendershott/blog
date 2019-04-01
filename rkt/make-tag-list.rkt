@@ -23,10 +23,10 @@
      (call-with-output-file*/delete
       #:exists 'replace output-html
       (λ (out)
-        (displayln "<!DOCTYPE html>" out)
-        (displayln (xexpr->string
-                    (tags-xexpr tags (file->uri www output-html)))
-                   out)))]))
+        (display "<!DOCTYPE html>" out)
+        (display (xexpr->string
+                  (tags-xexpr tags (file->uri www output-html)))
+                 out)))]))
 
 (define/contract (tags-xexpr tags page-path)
   (-> (listof string?) path-string? xexpr/c)

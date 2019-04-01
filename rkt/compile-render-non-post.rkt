@@ -19,11 +19,11 @@
      (call-with-output-file*/delete
       #:exists 'replace output-html
       (λ (out)
-        (displayln "<!DOCTYPE html>" out)
-        (displayln (xexpr->string
-                    (non-post-xexpr (build-path non-post-source)
-                                    (file->uri www output-html)))
-                   out)))]))
+        (display "<!DOCTYPE html>" out)
+        (display (xexpr->string
+                  (non-post-xexpr (build-path non-post-source)
+                                  (file->uri www output-html)))
+                 out)))]))
 
 (define (non-post-xexpr source-path page-path)
   (define contents (parse-markdown source-path))

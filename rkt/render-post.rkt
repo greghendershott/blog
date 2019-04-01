@@ -18,10 +18,10 @@
      (call-with-output-file*/delete
       #:exists 'replace output-html
       (λ (out)
-        (displayln "<!DOCTYPE html>" out)
-        (displayln (xexpr->string
-                    (post-xexpr the-post (file->uri www output-html)))
-                   out)))]))
+        (display "<!DOCTYPE html>" out)
+        (display (xexpr->string
+                  (post-xexpr the-post (file->uri www output-html)))
+                 out)))]))
 
 (define (post-xexpr the-post page-path)
   (match-define (post title date tags blurb more? body) the-post)
