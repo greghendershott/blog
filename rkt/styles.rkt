@@ -68,6 +68,8 @@
       div.footnotes {font-size: 90%;
                      border-top: 1px dotted}
 
+      img.screenshot {max-width: 100%}
+
       kbd {padding: 0.1em 0.6em;
            border: 1px solid #CCC;
            font-size: 80%;
