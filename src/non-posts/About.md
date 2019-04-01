@@ -31,9 +31,9 @@ Also I am available as a consultant.
 
 ## Elsewhere
 
-- Social networks
-    - [Twitter](https://twitter.com/GregHendershott)
-    - [LinkedIn](http://www.linkedin.com/in/greghendershott)
-- Programming
-    - [GitHub](https://github.com/greghendershott)
-    - [Open Hub](https://www.openhub.net/accounts/GregHendershott)
+- [Twitter](https://twitter.com/GregHendershott)
+- [GitHub](https://github.com/greghendershott)
+- [Open Hub](https://www.openhub.net/accounts/GregHendershott)
+
+(I used to list LinkedIn, here. But they started to require sign{in
+up} to view even public profiles. Bye.)
