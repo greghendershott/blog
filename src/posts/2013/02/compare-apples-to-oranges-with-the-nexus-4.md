@@ -4,7 +4,7 @@
 
 About a month ago I got my Nexus 4. My observations follow.
 
-![Google Nexus 4](http://2.bp.blogspot.com/TWF21RygkFpkU-vKhdAxub1mF6L9xxoqc7aD1F6tD8ElCQFES4Ljn3yuUqcM1iZxC5A=w346 "Google Nexus 4")
+![Google Nexus 4](/img/google-nexus-4.png "Google Nexus 4")
 
 <!-- more -->
 

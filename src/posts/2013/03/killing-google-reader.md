@@ -5,9 +5,9 @@
 Last night I learned the news that
 [Google is killing Google Reader July 1][announce].
 
-This morning I'm feeling [like this](http://youtu.be/A25VgNZDQ08).
+This morning I'm feeling [like this](https://youtu.be/A25VgNZDQ08).
 
-<iframe width="560" height="315" src="http://www.youtube.com/embed/A25VgNZDQ08" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/A25VgNZDQ08" frameborder="0" allowfullscreen></iframe>
 
 <!-- more -->
 

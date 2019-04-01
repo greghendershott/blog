@@ -12,7 +12,7 @@ Someone[^someone] in my Google+ circles posted about
 
 Here's the actual summary from oreilly.com:
 
-> [![Understanding and Using C Pointers](http://akamaicovers.oreilly.com/images/0636920028000/cat.gif)](http://shop.oreilly.com/product/0636920028000.do)
+> [![Understanding and Using C Pointers](https://akamaicovers.oreilly.com/images/0636920028000/cat.gif)](https://shop.oreilly.com/product/0636920028000.do)
 >
 > Improve your programming through a solid understanding of C pointers and memory management. With this practical book, you’ll learn how pointers provide the mechanism to dynamically manipulate memory, enhance support for data structures, and enable access to hardware. Author Richard Reese shows you how to use pointers with arrays, strings, structures, and functions, using memory models throughout the book.
 >
@@ -75,7 +75,7 @@ Again, these are _pretend_ reviews. The _real_ reviews are very
 positive and it looks like an excellent book that you should
 [buy][book][^link] immediately.
 
-[book]: http://shop.oreilly.com/product/0636920028000.do
+[book]: https://shop.oreilly.com/product/0636920028000.do
 
 ---
 

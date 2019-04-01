@@ -8,11 +8,11 @@ sometimes I forget it's there.
 
 I was using the Facebook app for iPad today. Which I hardly ever do. And I'm getting a lot of this in my feed:
 
-![Suggested Post](http://1.bp.blogspot.com/-uhz6t3xo6xQ/USVbQw4XnPI/AAAAAAAAIz4/61LoG1cqtno/s400/Screen+Shot+2013-02-20+at+6.23.46+PM.png)
+![Suggested Post](/img/suggested-post.png)
 
 And I'm all like:
 
-![The fuck was that... the fuck is this?](http://1.bp.blogspot.com/-4a-nouLaGL0/USVbUmlK-_I/AAAAAAAAI0A/v5J-FTeZ3e4/s1600/the-fuck-was-that-is-this.gif)
+![The fuck was that... the fuck is this?](/img/the-fuck-was-that-is-this.gif)
 
 And I'm clicking "report spam" on each of the little fuckers. Tap, tap, please bugger off. Tap, tap, suck my balls and bugger off. And so on.
 

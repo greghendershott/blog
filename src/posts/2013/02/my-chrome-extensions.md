@@ -5,7 +5,7 @@
 My [Chrome](http://www.google.com/chrome) extensions these days, from
 left to right...
 
-![Chrome Extensions](http://1.bp.blogspot.com/-pv8E5s-4nQU/URsDG_zvoLI/AAAAAAAAIyY/neT0vcZF3Ew/s200/Screen+Shot+2013-02-12+at+10.05.25+PM.png)
+![Chrome Extensions](/img/chrome-extensions.png)
 
 <!-- more -->
 

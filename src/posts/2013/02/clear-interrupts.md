@@ -2,7 +2,7 @@
     Date: 2013-02-12T07:00:00
     Tags: life, nostalgia, technology
 
-For some reason [CLI](http://en.wikipedia.org/wiki/Interrupt_flag)
+For some reason [CLI](https://en.wikipedia.org/wiki/Interrupt_flag)
 popped into my head the other day.
 
 `CLI` is the 808x instruction to clear maskable interrupts. If you're
@@ -11,13 +11,13 @@ in your routine — to prevent _another_ hardware interrupt
 from causing your routine to be re-entered. Neglecting this invites
 the most delightful form of bug, the intermittent bug.
 
-![Roland MPU-401](http://upload.wikimedia.org/wikipedia/commons/0/06/Roland_MPU-401.jpg "Roland MPU-401")
+![Roland MPU-401](https://upload.wikimedia.org/wikipedia/commons/0/06/Roland_MPU-401.jpg "Roland MPU-401")
 
 <!-- more -->
 
 I spent a lot of time struggling with this stuff early in my coding
 career, writing a MIDI sequencer. The
-[Roland MPU-401](http://en.wikipedia.org/wiki/MPU-401) MIDI interface
+[Roland MPU-401](https://en.wikipedia.org/wiki/MPU-401) MIDI interface
 would hit IRQ 8 when some MIDI bytes arrived, or when a timer
 ticked. I remember eagerly reading BYTE magazine articles and learning
 how write ISRs (interrupt service routines) by trial and error. Many

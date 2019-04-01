@@ -25,8 +25,8 @@ Most recently I founded Extramaze LLC, where I'm building things using
 Racket, including a [search engine for deals on music gear][deals].
 Also I am available as a consultant.
 
-[Racket]: http://www.racket-lang.org
-[Recurse Center]: http://www.recurse.com
+[Racket]: https://www.racket-lang.org
+[Recurse Center]: https://www.recurse.com
 [deals]: https://deals.extramaze.com
 
 ## Elsewhere
