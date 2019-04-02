@@ -36,7 +36,7 @@ preview        := racket rkt/preview.rkt
 
 .PHONY: rkt
 rkt:
-	(cd rkt; raco make *.rkt)
+	(cd rkt; raco make *.rkt; raco test -x .)
 
 ######################################################################
 
