@@ -1,17 +1,40 @@
 -*- mode:org ; mode:visual-line -*-
 
-* DONE Max posts per feed
+* Philosophy
+Greenspun's Tenth Rule applied to static blog generators is ~make~.
 
-* DONE No blurbs after N posts
+A blog generator used by Racket programmers needn't have code to deal with configuration, customization, or templates. Instead, just change the code to do what you want.
+
+* General
+The heart of this is the ~Makefile~.
+
+As with Frog, this uses a "compile and link" metaphor.
+
+** "Compile"
+- Blog post source ~$(src)/posts/*.md~ files are "compiled" into ~$(cache)/*.rktd~ files. These files have some meta-data plus an ~xexpr~ representing the /body/ of the post.
+- Each ~.rktd~ pathname is appended to a ~$(cache)/tags/{tag-name}~.
+** "Link"
+- Generate the complete ~.html~ pages for posts.
+- Generate feeds and index pages for tags.
+- Generate ~$(src)/non-posts/*.md~.
+** Advantages
+- Changes to the overall page (e.g. updating a copyright in the footer) can be done without rebuilding the posts from scratch. This particularly helps when the posts are enhanced with things like syntax highlighting and automatic links to Racket docs.
+- As already mentioned, this allows a tags "database" to be made at the same time.
+
+* Roadmap
+
+** TODO Maybe stop depending on frog/{enhance-body paths}
+Split out from frog to new pkgs?
+Also, the pygmentize stuff for frog spanws a long-running python process, which makes frog faster, but won't help us (in fact it may hurt a little).
+
+** DONE Max posts per feed
+
+** DONE No blurbs after N posts
 Now it is just one big index HTML for each tag.
 That's a little heavy tags with many posts -- especially ~all~.
 How about abbreviate listing after N posts?
 e.g. Just Title, Date. Maybe tags. Definitely not the blurb.
 That's /most/ of the benefit of split index-N.html pages, without the hassle.
 
-* DONE Add a ~make new~ target that creates the template file for a new post.
+** DONE Add a ~make new~ target that creates the template file for a new post.
 Would be even handier than with Frog, now that the sources must be nested in YYYY/MM dirs.
-
-* TODO Maybe stop depending on frog/{enhance-body paths}
-Split out from frog to new pkgs?
-Also, the pygmentize stuff for frog spanws a long-running python process, which makes frog faster, but won't help us (in fact it may hurt a little).

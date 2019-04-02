@@ -7,6 +7,7 @@ www   := www
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
 # and from those build lists of targets.
+
 post-sources := $(shell find $(src)/posts -type f)
 post-caches  := $(patsubst $(src)/posts/%.md,$(cache)/%.rktd,$(post-sources))
 post-htmls   := $(patsubst $(cache)/%.rktd,$(www)/%.html,$(post-caches))
@@ -39,12 +40,6 @@ rkt:
 	(cd rkt; raco make *.rkt; raco test -x .)
 
 ######################################################################
-
-# Given my current level of Makefile fu, I can only see how to make
-# this work with two distinct passes. The main issue seems to be that
-# compile-post.rkt needs to produce $(tag-caches), which in turn are
-# sources for index and feed files. My attempts to do it as one single
-# chain never worked.
 
 .PHONY: all clean new serve preview
 
