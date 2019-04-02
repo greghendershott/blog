@@ -164,13 +164,13 @@ clean-sitemap:
 ######################################################################
 # S3 bucket deploy
 
-AWS    := aws --profile greg
-BUCKET := www.greghendershott.com
+aws    := aws --profile greg
+bucket := www.greghendershott.com
 
 .PHONY: s3-deploy s3-full-deploy
 
 s3-deploy:
-	$(AWS) s3 sync --no-follow-symlinks $(www) s3://$(BUCKET)
+	$(aws) s3 sync --no-follow-symlinks $(www) s3://$(bucket)
 
 s3-full-deploy:
-	$(AWS) s3 sync --delete --no-follow-symlinks $(www) s3://$(BUCKET)
+	$(aws) s3 sync --delete --no-follow-symlinks $(www) s3://$(bucket)
