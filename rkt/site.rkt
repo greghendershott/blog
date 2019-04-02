@@ -4,20 +4,16 @@
          racket/format
          net/uri-codec)
 
-(provide scheme
+(provide author
+         scheme
          host
          full-uri
-         urn
-         author)
+         urn)
 
-(define (scheme)
-  "https")
-
-(define (host)
-  "www.greghendershott.com")
-
-(define (host/urn)
-  "urn:www-greghendershott-com")
+(define (author)   "Greg Hendershott")
+(define (scheme)   "https")
+(define (host)     "www.greghendershott.com")
+(define (host/urn) "urn:www-greghendershott-com")
 
 (define/contract (full-uri uri-path)
   (-> (and/c path-string? relative-path?) string?)
@@ -26,6 +22,3 @@
 (define (urn uri-path)
   ;; Note that URNs have a more restricted syntax than URIs.
   (~a (host/urn) ":" (regexp-replace* #px"/" uri-path "-")))
-
-(define (author)
-  "Greg Hendershott")
