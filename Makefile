@@ -2,7 +2,7 @@
 # output.
 src   := src
 cache := .cache
-www   := /home/greg/src/greghendershott.github.com
+www   := www
 
 # Make normally "pulls" targets from sources, but we want to "push"
 # sources to targets. As a result, we need to build lists of sources
