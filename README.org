@@ -9,7 +9,7 @@ How about abbreviate listing after N posts?
 e.g. Just Title, Date. Maybe tags. Definitely not the blurb.
 That's /most/ of the benefit of split index-N.html pages, without the hassle.
 
-* TODO Add a ~make new~ target that creates the template file for a new post.
+* DONE Add a ~make new~ target that creates the template file for a new post.
 Would be even handier than with Frog, now that the sources must be nested in YYYY/MM dirs.
 
 * TODO Maybe stop depending on frog/{enhance-body paths}

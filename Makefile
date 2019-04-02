@@ -31,6 +31,7 @@ make-tag-list  := racket rkt/make-tag-list.rkt
 make-tag-feed  := racket rkt/make-tag-feed.rkt
 make-sitemap   := racket rkt/make-sitemap.rkt
 make-css       := racket rkt/styles.rkt
+new-post       := racket rkt/new-post.rkt
 preview        := racket rkt/preview.rkt
 
 .PHONY: rkt
@@ -45,7 +46,7 @@ rkt:
 # sources for index and feed files. My attempts to do it as one single
 # chain never worked.
 
-.PHONY: all clean preview
+.PHONY: all clean new serve preview
 
 all:
 	make cache
@@ -53,15 +54,14 @@ all:
 
 clean: clean-cache clean-www
 
+new:
+	$(new-post) $(src)/posts
+
 serve: $(www)/index.html all
 	$(preview) $<
 
 preview: $(www)/index.html all
 	$(preview) $< "browser"
-
-# Help create $(src)/posts/YYYY/MM/TITLE.md template
-new:
-	@echo 'not yet implemented'
 
 ######################################################################
 # Stage 1
