@@ -4,7 +4,7 @@
          (multi-in racket (contract file format list match path port string))
          threading
          "post.rkt"
-         "render-page.rkt"
+         "page-xexpr.rkt"
          "util.rkt"
          "xexpr.rkt")
 

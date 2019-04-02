@@ -4,7 +4,7 @@
          (multi-in racket (contract file format match path))
          (only-in "compile-post.rkt" datetime+tags->xexpr)
          "post.rkt"
-         "render-page.rkt"
+         "page-xexpr.rkt"
          "tag-posts.rkt"
          "util.rkt"
          "xexpr.rkt")

@@ -4,7 +4,7 @@
          (multi-in racket (contract file format list match path port string))
          (only-in markdown parse-markdown)
          threading
-         "render-page.rkt"
+         "page-xexpr.rkt"
          "util.rkt"
          "xexpr.rkt")
 
