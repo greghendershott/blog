@@ -156,10 +156,10 @@ clean-sitemap:
 
 
 ######################################################################
-# GitHub pages deploy
+# GitHub Pages deploy
 
-# Just set $(www) to /home/greg/src/greghendershott.github.com
-
+# Just set $(www) to /home/greg/src/greghendershott.github.com to
+# build directly in that dir. Then commit and push in that repo.
 
 ######################################################################
 # S3 bucket deploy
