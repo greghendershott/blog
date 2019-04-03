@@ -1,0 +1,15 @@
+I am showing work-in-progress.
+
+As a result, this repo currently includes a mix of material, ranging
+from blog post prose to programming source code.
+
+1. A few programming source files -- for example Makefile and rkt/*rkt
+   -- include an Apache 2.0 license statement in the file.
+
+2. All remaining files -- including but not limited to src/* -- are
+   provided with NO LICENSE. Every such file is:
+
+     Copyright (c) 2011-2019 by Greg Hendershott. All rights reserved.
+
+In short: Unless a file contains an explicit Apache 2.0 license
+statement, no license or rights are granted.
