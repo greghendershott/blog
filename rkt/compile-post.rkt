@@ -30,6 +30,10 @@
 
 (provide datetime+tags->xexpr) ;for tag index
 
+(module+ test
+  (require rackunit
+           racket/function))
+
 ;; 1. Create a .rktd file something like the Frog post-struct.rkt
 ;;
 ;; 2. For each tag, create a directory of the tag name (if it doesn't
@@ -134,10 +138,6 @@
            more)]
     [(cons x _) (err (~a "found:\n" (format "~v" x)))]
     [_ (err "none found")]))
-
-(module+ test
-  (require rackunit
-           racket/function))
 
 (module+ test
   (define p (string->path "/path/to/file"))

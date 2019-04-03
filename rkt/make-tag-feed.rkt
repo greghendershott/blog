@@ -23,6 +23,9 @@
          "util.rkt"
          "xexpr.rkt")
 
+(module+ test
+  (require rackunit))
+
 (module+ main (main))
 
 (define max-posts-per-feed 10)
@@ -43,9 +46,6 @@
   (match which
     ["atom" (write-atom-feed tag the-posts out)]
     ["rss"  (write-rss-feed  tag the-posts out)]))
-
-(module+ test
-  (require rackunit))
 
 ;;; atom
 
