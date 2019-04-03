@@ -88,7 +88,7 @@ $(cache)/%.rktd: $(src)/posts/%.md
 ######################################################################
 # Stage 2
 
-.PHONY: hmtls-and-feeds clean-www
+.PHONY: www clean-www
 
 www: htmls feeds static sitemap
 
