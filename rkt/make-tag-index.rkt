@@ -16,7 +16,7 @@
 
 (require racket/require
          (multi-in racket (contract file format match path))
-         (only-in "compile-post.rkt" datetime+tags->xexpr)
+         (only-in "make-post-cache.rkt" datetime+tags->xexpr)
          "post.rkt"
          "page-xexpr.rkt"
          "tag-posts.rkt"

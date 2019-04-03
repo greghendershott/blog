@@ -38,16 +38,16 @@ non-post-htmls   := $(patsubst %.md,$(www)/%.html,$(notdir $(non-post-sources)))
 #
 # Note: For now these are in rkt subdir. Someday move the generic
 # pieces to a "tadpole" package?
-compile-post   := racket rkt/compile-post.rkt
-render-post    := racket rkt/render-post.rkt
-render-non-post := racket rkt/compile-render-non-post.rkt
-make-tag-index := racket rkt/make-tag-index.rkt
-make-tag-list  := racket rkt/make-tag-list.rkt
-make-tag-feed  := racket rkt/make-tag-feed.rkt
-make-sitemap   := racket rkt/make-sitemap.rkt
-make-css       := racket rkt/styles.rkt
-new-post       := racket rkt/new-post.rkt
-preview        := racket rkt/preview.rkt
+make-post-cache    := racket rkt/make-post-cache.rkt
+make-post-html     := racket rkt/make-post-html.rkt
+make-non-post-html := racket rkt/make-non-post-html.rkt
+make-tag-index     := racket rkt/make-tag-index.rkt
+make-tag-list      := racket rkt/make-tag-list.rkt
+make-tag-feed      := racket rkt/make-tag-feed.rkt
+make-sitemap       := racket rkt/make-sitemap.rkt
+make-css           := racket rkt/make-css.rkt
+new-post           := racket rkt/make-new-post.rkt
+preview            := racket rkt/make-preview.rkt
 
 .PHONY: rkt
 rkt:
@@ -83,7 +83,7 @@ clean-cache:
 	-rm -rf $(cache)
 
 $(cache)/%.rktd: $(src)/posts/%.md
-	$(compile-post) $< $(abspath $(cache)/tags) $@
+	$(make-post-cache) $< $(abspath $(cache)/tags) $@
 
 ######################################################################
 # Stage 2
@@ -100,7 +100,7 @@ clean-www: clean-htmls clean-feeds clean-sitemap
 
 htmls: $(post-htmls) $(tag-htmls) $(non-post-htmls) \
        $(www)/tags/index.html $(www)/index.html $(www)/main.css \
-       rkt/render-page.rkt rkt/site.rkt
+       rkt/page-xexpr.rkt rkt/site.rkt
 
 clean-htmls:
 	-rm $(post-htmls)
@@ -111,22 +111,22 @@ clean-htmls:
 	-rmdir $(www)/tags
 	-rm $(www)/main.css
 
-$(www)/%.html: $(cache)/%.rktd rkt/render-page.rkt
-	$(render-post) $< $(www) $@
+$(www)/%.html: $(cache)/%.rktd rkt/page-xexpr.rkt
+	$(make-post-html) $< $(www) $@
 
-$(www)/%.html: $(src)/non-posts/%.md rkt/compile-render-non-post.rkt
-	$(render-non-post) $< $(www) $@
+$(www)/%.html: $(src)/non-posts/%.md rkt/make-non-post-html.rkt
+	$(make-non-post-html) $< $(www) $@
 
-$(www)/tags/%.html: $(cache)/tags/% rkt/render-page.rkt
+$(www)/tags/%.html: $(cache)/tags/% rkt/page-xexpr.rkt
 	$(make-tag-index) $< $(www) $@
 
-$(www)/tags/index.html: $(tag-caches) rkt/render-page.rkt rkt/make-tag-list.rkt
+$(www)/tags/index.html: $(tag-caches) rkt/page-xexpr.rkt rkt/make-tag-list.rkt
 	$(make-tag-list) $(cache)/tags/ $(www) $@
 
-$(www)/index.html: $(www)/tags/all.html rkt/render-page.rkt rkt/make-tag-feed.rkt
+$(www)/index.html: $(www)/tags/all.html rkt/page-xexpr.rkt rkt/make-tag-feed.rkt
 	cp $< $@
 
-$(www)/main.css: rkt/styles.rkt
+$(www)/main.css: rkt/make-css.rkt
 	$(make-css) $@
 
 # Feeds
