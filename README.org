@@ -1,28 +1,27 @@
--*- mode:org ; mode:visual-line -*-
-
 This is the source for my blog.
 
-Although I developed (and still intend to maintain) Frog, I wanted to experiment with a different approach.
+Although I developed -- and still intend to maintain -- [[https://github.com/greghendershott/frog][Frog]], I wanted to experiment with a different approach: Explode it into little pieces driven by a ~Makefile~.
 
-* Philosophy
-Greenspun's Tenth Rule applied to static blog generators is ~make~.
+My [[https://en.wikipedia.org/wiki/Greenspun's_tenth_rule][Greenspun's Tenth Rule]] riff: "Any sufficiently complicated static blog generator contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of ~make~." I can say that without being an asshole because I made one.
 
-A blog generator used by Racket programmers needn't have code to deal with configuration, customization, or templates. Instead, just change the code to do what you want.
+Premise: If you're a programmer, your blog generator need not have configuration, customization, or templates. If you want it to work differently, you can change the code.
 
 * General
 The heart of this is the ~Makefile~.
 
-As with Frog, this uses a "compile and link" metaphor.
+As with Frog, this uses two-stage, "compile and link" metaphor.
 
 ** "Compile"
-- Blog post source ~$(src)/posts/*.md~ files are "compiled" into ~$(cache)/*.rktd~ files. These files have some meta-data plus an ~xexpr~ representing the /body/ of the post.
-- Each ~.rktd~ pathname is appended to a ~$(cache)/tags/{tag-name}~.
+- Blog post source files ~$(src)/posts/*.md~ are "compiled" into ~$(cache)/*.rktd~ files. These files have some meta-data plus an ~xexpr~ representing the body of the post (e.g. the ~<article>~ element that will go in some containing page).
+- Each post tag appends the ~.rktd~ pathname to a ~$(cache)/tags/{tag-name}~.
 ** "Link"
-- Generate the complete ~.html~ pages for posts.
-- Generate feeds and index pages for tags.
+- Use ~$(cache)/*.rktd~ post bodies to generate complete ~.html~ post pages.
+- Use ~$(cache)/tags/{tag-name}~ to generate feeds and index page for each tag.
 - Generate ~$(src)/non-posts/*.md~.
+- Generate ~sitemap.txt~.
+- ~cp~ miscellaneous "assets" from ~$(src)/static/*~.
 ** Advantages
-- Changes to the overall page (e.g. updating a copyright in the footer) can be done without rebuilding the posts from scratch. This particularly helps when the posts are enhanced with things like syntax highlighting and automatic links to Racket docs.
+- Changes to the overall page (e.g. updating a copyright in the footer) can be done without rebuilding the posts from scratch. This particularly helps when the posts are enhanced with things like syntax highlighting and automatic links to Racket docs, which take a bit longer to do.
 - As already mentioned, this allows a tags "database" to be made at the same time.
 
 * TO-DO
