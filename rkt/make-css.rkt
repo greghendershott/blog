@@ -56,8 +56,7 @@
       main {margin: 0px auto;
             max-width: 768px}
 
-      p {line-height: 1.6}
-      ul {line-height: 2}
+      p, ol, ul {line-height: 1.6}
 
       a {text-decoration: none;
          color: #a57e74}
