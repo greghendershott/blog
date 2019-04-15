@@ -15,7 +15,7 @@
 ;; limitations under the License.
 
 (require racket/require
-         (multi-in racket (date file format function match))
+         (multi-in racket (date file format function match string))
          (only-in frog/paths slug)
          "util.rkt")
 
@@ -34,7 +34,8 @@
      (define day (~00 d))
      (define 8601-str (~a year "-" month "-" day "T00:00:00Z"))
 
-     (define post-file (build-path posts-dir year month (~a (slug title) ".md")))
+     (define post-file (build-path posts-dir year month
+                                   (~a (slug (string-downcase title)) ".md")))
      (make-parent-directory* post-file)
      (call-with-output-file*/delete
       #:exists 'error post-file
