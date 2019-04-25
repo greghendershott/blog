@@ -70,9 +70,9 @@
                  white-space: nowrap}
       nav ul li {display: inline}
 
-      h1, h2, h3 {font-weight: 500}
-      h1 {margin: 0 0 8px 0;
-          font-size: 1.5em}
+      h1, h2, h3 {font-weight: 500;
+                  margin-top: 1.5em}
+      h1 {font-size: 1.5em}
       h2 {font-size: 1.3em}
 
       article.index.newer {margin-bottom: 36px;
