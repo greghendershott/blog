@@ -83,7 +83,8 @@
       p.date-and-tags {line-height: 1.0}
 
       div.footnotes {font-size: 90%;
-                     border-top: 1px dotted}
+                     border-top: 1px dotted;
+                     margin-top: 2em}
 
       img.screenshot {max-width: 100%}
 
