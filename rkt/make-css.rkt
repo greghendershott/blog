@@ -74,6 +74,9 @@
                   margin-top: 1.5em}
       h1 {font-size: 1.5em}
       h2 {font-size: 1.3em}
+      header > h1 {font-size: 2em;
+                   margin-top: 0;
+                   margin-bottom: 0}
 
       article.index.newer {margin-bottom: 36px;
                            padding-bottom: 18px;
