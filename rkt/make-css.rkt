@@ -102,7 +102,8 @@
 
       code {font-family: monospace;
             font-size: 90%;
-            background-color: #f0f0fa;
+            color: #333;
+            background-color: #fdf6e3;
             border: 1px solid #bbb;
             border-radius: 4px;
             padding: 1px 4px}})
