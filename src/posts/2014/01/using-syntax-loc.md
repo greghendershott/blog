@@ -157,8 +157,6 @@ Cheat sheet:
 To anticipate a comment: Yes, I know. I ought to add this to
 [Fear of Macros], too.
 
----
-
 [^1]: The "we" in this blog post was "me" yesterday. Big thanks to Eric
 Dobson for pointing this out on #racket IRC.
 

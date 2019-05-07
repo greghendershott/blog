@@ -228,10 +228,6 @@ original values are restored.
 [thread cells]: http://docs.racket-lang.org/reference/threadcells.html
 [Frog]: https://github.com/greghendershott/frog
 
----
-
-Notes:
-
 [^why doesn't setting a parameter return the value?]: I've wondered
 why setting a parameter doesn't return the value that you passed
 it.

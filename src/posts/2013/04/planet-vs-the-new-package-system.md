@@ -70,8 +70,6 @@ liability. Eventually it would be more beneficial to have a simple,
 clear message for folks who want to contribute as well as use
 libraries.
 
----
-
 [^1]: Of course you could also generate the usual HTML files and host
 them using GitHub Pages for your project. Personally, I find it awward
 to juggle the special `gh-pages` branch. But it might be worth it for

@@ -128,6 +128,4 @@ experience with gradually more-challenging programming.
 [Alan Kay]: https://en.wikipedia.org/wiki/Alan_kay
 [Alonzo Church]: https://en.wikipedia.org/wiki/Alonzo_Church
 
----
-
 [^1]: a.k.a. The Three "Al"s

@@ -210,5 +210,3 @@ I saw in [lunaryorn's init file]:
 Anyway, the upshot is I can type <kbd>C-c w t</kbd>, then keep
 pressing single hydra keys to switch among themes. Upon finding the
 optimal mood management, tap <kbd>RETURN</kbd> to exit the hydra.
-
----

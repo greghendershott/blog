@@ -193,6 +193,3 @@ Of course I've tried many more things in Racket, that I have sitting
 around here and there. Web crawling and scraping. Alternative
 definition forms. And more. All have been fun to do, and most have
 taught me more about Racket and/or programming in general.
-
----
-

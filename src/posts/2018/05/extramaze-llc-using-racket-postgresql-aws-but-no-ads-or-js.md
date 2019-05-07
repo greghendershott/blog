@@ -544,6 +544,3 @@ using advertising or JavaScript.
 
 I realize this post has a somewhat uneven level of detail, so maybe I
 will loop back later and drill down on some parts.
-
-
----
