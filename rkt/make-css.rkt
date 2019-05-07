@@ -85,6 +85,14 @@
                            border-bottom: 1px dotted #ccc}
       p.date-and-tags {line-height: 1.0}
 
+      blockquote {text-align: justify;
+                  font-style: italic;
+                  border-left: 2px #ddd solid;
+                  padding-left: 1em;
+                  margin: 2em}
+      blockquote > footer {text-align: right;
+                           font-style: normal}
+
       div.footnotes {font-size: 90%;
                      border-top: 1px dotted;
                      margin-top: 2em}
