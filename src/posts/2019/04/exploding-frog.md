@@ -21,7 +21,7 @@ I believe there's a variation of [Greenspun's Tenth Rule]:
 > ad-hoc, informally-specified, bug-ridden, slow implementation of
 > half of `make`.
 >
-> -- Someone who has made a static blog generator
+> <footer>-- Someone who has made a static blog generator</footer>
 
 [Greenspun's Tenth Rule]: https://en.wikipedia.org/wiki/Greenspun's_tenth_rule
 
