@@ -173,12 +173,12 @@ clean-sitemap:
 ######################################################################
 # S3 bucket deploy
 
-aws    := aws --profile greg
-bucket := www.greghendershott.com
-cfid   := E2LPR1YW069SHG
+aws  := aws --profile greg
+dest := s3://www.greghendershott.com
+cfid := E2LPR1YW069SHG
 
 .PHONY: deploy
 
 deploy:
-	$(aws) s3 sync --no-follow-symlinks $(www) s3://$(bucket)
+	$(aws) s3 sync --no-follow-symlinks $(www) $(dest)
 	$(aws) cloudfront create-invalidation --distribution-id $(cfid) --paths "/*" > /dev/null
