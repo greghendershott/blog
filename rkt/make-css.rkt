@@ -111,6 +111,18 @@
            line-height: 1.4;
            white-space: nowrap}
 
+      pre {font-family: monospace;
+           font-size: 90%;
+           color: #333;
+           background-color: #fdf6e3;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+           padding: 10px}
+
+      pre code {border: none;
+                border-radius: none;
+                padding: 0px}
+
       code {font-family: monospace;
             font-size: 90%;
             color: #333;
