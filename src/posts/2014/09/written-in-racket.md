@@ -173,14 +173,14 @@ that they tend to get mythologized and jargonized. Some of us need to
 take a deep breath, see how the underlying mechanism is actually quite
 simple, and build up from there.
 
-I've written [some blog posts](http://www.greghendershott.com/tags/Racket.html).
+I've written [some blog posts](https://www.greghendershott.com/tags/Racket.html).
 
 I've tried to pull my weight on the Racket user mailing list and on
 Stack Overflow -- it's fun as you gradually gain confidence to help
 others the way you were helped. I find it's also a great test whether
 I really understand something as well as I imagined.
 
-[Fear of Macros]: http://www.greghendershott.com/fear-of-macros/
+[Fear of Macros]: https://www.greghendershott.com/fear-of-macros/
 
 ---
 
