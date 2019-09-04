@@ -7,7 +7,7 @@ couple months. The experience has been utterly boring and wonderful.
 
 <!-- more -->
 
-Someime in the 1990s, I upgraded a desktop computer from something
+Sometime in the 1990s, I upgraded a desktop computer from something
 like Windows 3.1 to Windows 95. The result was... not good. Some
 hardware wasn't working well. I remember cursing Plug and Play. I
 figured out some things, but that computer never was fully right.
