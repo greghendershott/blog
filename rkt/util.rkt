@@ -26,14 +26,19 @@
 (module+ test
   (require rackunit))
 
+(define (delete-file* path)
+  (when (file-exists? path)
+    (delete-file path)))
+
+(define ((raise-after-deleting path) e)
+  (delete-file* path)
+  (raise e))
+
 (define (call-with-output-file*/delete path
                                        proc
                                        #:mode [mode 'binary]
                                        #:exists [exists 'error])
-  (with-handlers ([exn? (λ (e)
-                          (when (file-exists? path)
-                            (delete-file path))
-                          (raise e))])
+  (with-handlers ([exn? (raise-after-deleting path)])
     (call-with-output-file*
       path
       #:mode mode
