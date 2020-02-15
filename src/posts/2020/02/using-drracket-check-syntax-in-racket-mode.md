@@ -36,7 +36,7 @@ A few things to note:
 
 Traditionally Racket Mode has required you to `racket-run` a file in order for some handy features to be available, because it can use the namespace resulting from `module->namespace` to support those features. This reflects its origins as a wrapper around `xrepl`. It retained that basic approach even as it grew beyond `xrepl`.
 
-For instance it uses `namespace-mapped-symbols` to obtain a list of completion candidates. If it needs to get you documentation, it can synthesize a suitable identifier from a string using `namespace-symbol->identifier?`. It can give such an identifier to `xref-binding->definition-tag`, and in turn give that result to `xref-tag->path+anchor`, and get the appropriate help topic.
+For instance it uses `namespace-mapped-symbols` to obtain a list of completion candidates. If it needs to get you documentation, it can synthesize a suitable identifier from a string using `namespace-symbol->identifier`. It can give such an identifier to `xref-binding->definition-tag`, and in turn give that result to `xref-tag->path+anchor`, and get the appropriate help topic.
 
 Likewise the visit-definition feature can use the namespace to make the correct identifier to give to `identifier-binding`, which tells you where the binding was defined.
 
