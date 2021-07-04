@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+RACKET ?= racket
+RACO ?= $(RACKET) -l raco
+
 # Configure where are sources, build cache, and root of the web site
 # output.
 src   := src
@@ -38,20 +41,20 @@ non-post-htmls   := $(patsubst %.md,$(www)/%.html,$(notdir $(non-post-sources)))
 #
 # Note: For now these are in rkt subdir. Someday move the generic
 # pieces to a "tadpole" package?
-make-post-cache    := racket rkt/make-post-cache.rkt
-make-post-html     := racket rkt/make-post-html.rkt
-make-non-post-html := racket rkt/make-non-post-html.rkt
-make-tag-index     := racket rkt/make-tag-index.rkt
-make-tag-list      := racket rkt/make-tag-list.rkt
-make-tag-feed      := racket rkt/make-tag-feed.rkt
-make-sitemap       := racket rkt/make-sitemap.rkt
-make-css           := racket rkt/make-css.rkt
-new-post           := racket rkt/make-new-post.rkt
-preview            := racket rkt/make-preview.rkt
+make-post-cache    := $(RACKET) rkt/make-post-cache.rkt
+make-post-html     := $(RACKET) rkt/make-post-html.rkt
+make-non-post-html := $(RACKET) rkt/make-non-post-html.rkt
+make-tag-index     := $(RACKET) rkt/make-tag-index.rkt
+make-tag-list      := $(RACKET) rkt/make-tag-list.rkt
+make-tag-feed      := $(RACKET) rkt/make-tag-feed.rkt
+make-sitemap       := $(RACKET) rkt/make-sitemap.rkt
+make-css           := $(RACKET) rkt/make-css.rkt
+new-post           := $(RACKET) rkt/make-new-post.rkt
+preview            := $(RACKET) rkt/make-preview.rkt
 
 .PHONY: rkt
 rkt:
-	(cd rkt; raco make *.rkt; raco test -x .)
+	(cd rkt; $(RACO) make *.rkt; $(RACO) test -x .)
 
 ######################################################################
 
