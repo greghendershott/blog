@@ -2,6 +2,10 @@
     Date: 2018-05-04T00:00:00
     Tags: Racket, Extramaze
 
+> Update: Due to lack of interest/use, in June 2021 this site was shut
+> down and user data (emails, names, search alerts) deleted from all
+> systems and backups.
+
 For Extramaze LLC I'm using Racket in a commercial project --- a search
 engine with email alerts for deals on music gear ---
 [deals.extramaze.com](https://deals.extramaze.com).

@@ -2,6 +2,10 @@
     Date: 2018-05-20T00:00:00
     Tags: Racket, Extramaze
 
+> Update: Due to lack of interest/use, in June 2021 this site was shut
+> down and user data (emails, names, search alerts) deleted from all
+> systems and backups.
+
 In my [previous post] I discussed what I'm doing with
 [deals.extramaze.com] -- and what I'm intentionally _not_ doing. Since
 then, I'm not-doing more. This improves performance and simplifies the

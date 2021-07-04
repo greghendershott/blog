@@ -21,13 +21,14 @@ worked on projects using Clojure, Haskell, and Python.
 I worked at Droit Financial Technologies where I used Clojure and
 Datomic.
 
-Most recently I founded Extramaze LLC, where I'm building things using
-Racket, including a [search engine for deals on music gear][deals].
-Also I am available as a consultant.
+I founded Extramaze LLC. One motivation was to launch a small [search
+engine for music gear deals][deals], later closed due to lack of
+interest. Another motivation was to provide consulting services, which
+are still available!
 
 [Racket]: https://www.racket-lang.org
 [Recurse Center]: https://www.recurse.com
-[deals]: https://deals.extramaze.com
+[deals]: /2018/05/extramaze-llc-using-racket-postgresql-aws-but-no-ads-or-js.html
 
 ## Elsewhere
 
