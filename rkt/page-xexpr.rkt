@@ -57,6 +57,8 @@
             [type "application/rss+xml"]
             [title "RSS Feed"]
             [href ,(full-uri rss-path)]))
+     (link ([rel "me"]
+            [href "https://mastodon.social/@greghendershott"]))
      ,@heads)
 
     (body ()
@@ -75,7 +77,10 @@
 
      (footer ([class "site"])
       (p ()
-       "Created using a Makefile, Racket, and 'tadpole'.")
-      (p ()
        "Copyright " copy " 2012" ndash ,(~a (date-year (current-date)))
-       " by Greg Hendershott. All rights reserved.")))))
+       " by Greg Hendershott. All rights reserved.")
+      (p ()
+       "Created using a Makefile, Racket, and 'tadpole'.  "
+       (a ([rel "me"]
+           [href "https://mastodon.social/@greghendershott"])
+        "Mastodon"))))))
